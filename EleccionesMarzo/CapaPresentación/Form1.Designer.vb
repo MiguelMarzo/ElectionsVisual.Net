@@ -27,7 +27,15 @@ Partial Class Form1
         Me.dgvConsultas = New System.Windows.Forms.DataGridView()
         Me.txtBoxBuscarLocalidad = New System.Windows.Forms.TextBox()
         Me.lblBuscarLocalidad = New System.Windows.Forms.Label()
+        Me.lblCenso = New System.Windows.Forms.Label()
+        Me.txtBoxCensoNombreLocalidad = New System.Windows.Forms.TextBox()
+        Me.btnCenso = New System.Windows.Forms.Button()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.CalendarioCenso = New System.Windows.Forms.MonthCalendar()
+        Me.lblCensoFecha = New System.Windows.Forms.Label()
+        Me.DsElecciones1 = New CapaDatos.DSElecciones()
         CType(Me.dgvConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.DsElecciones1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'btnBuscarLocalidad
@@ -66,11 +74,76 @@ Partial Class Form1
         Me.lblBuscarLocalidad.TabIndex = 3
         Me.lblBuscarLocalidad.Text = "Buscar localidad:"
         '
+        'lblCenso
+        '
+        Me.lblCenso.AutoSize = True
+        Me.lblCenso.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCenso.Location = New System.Drawing.Point(153, 150)
+        Me.lblCenso.Name = "lblCenso"
+        Me.lblCenso.Size = New System.Drawing.Size(146, 24)
+        Me.lblCenso.TabIndex = 6
+        Me.lblCenso.Text = "Consultar censo"
+        '
+        'txtBoxCensoNombreLocalidad
+        '
+        Me.txtBoxCensoNombreLocalidad.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtBoxCensoNombreLocalidad.Location = New System.Drawing.Point(157, 196)
+        Me.txtBoxCensoNombreLocalidad.Name = "txtBoxCensoNombreLocalidad"
+        Me.txtBoxCensoNombreLocalidad.Size = New System.Drawing.Size(192, 28)
+        Me.txtBoxCensoNombreLocalidad.TabIndex = 5
+        '
+        'btnCenso
+        '
+        Me.btnCenso.Location = New System.Drawing.Point(407, 217)
+        Me.btnCenso.Name = "btnCenso"
+        Me.btnCenso.Size = New System.Drawing.Size(78, 42)
+        Me.btnCenso.TabIndex = 4
+        Me.btnCenso.Text = "Consultar"
+        Me.btnCenso.UseVisualStyleBackColor = True
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(53, 196)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(75, 18)
+        Me.Label1.TabIndex = 7
+        Me.Label1.Text = "Localidad:"
+        '
+        'CalendarioCenso
+        '
+        Me.CalendarioCenso.Location = New System.Drawing.Point(157, 254)
+        Me.CalendarioCenso.MaxSelectionCount = 1
+        Me.CalendarioCenso.Name = "CalendarioCenso"
+        Me.CalendarioCenso.TabIndex = 8
+        '
+        'lblCensoFecha
+        '
+        Me.lblCensoFecha.AutoSize = True
+        Me.lblCensoFecha.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCensoFecha.Location = New System.Drawing.Point(2, 241)
+        Me.lblCensoFecha.Name = "lblCensoFecha"
+        Me.lblCensoFecha.Size = New System.Drawing.Size(128, 18)
+        Me.lblCensoFecha.TabIndex = 9
+        Me.lblCensoFecha.Text = "Fecha elecciones:"
+        '
+        'DsElecciones1
+        '
+        Me.DsElecciones1.DataSetName = "DSElecciones"
+        Me.DsElecciones1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1279, 997)
+        Me.Controls.Add(Me.lblCensoFecha)
+        Me.Controls.Add(Me.CalendarioCenso)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.lblCenso)
+        Me.Controls.Add(Me.txtBoxCensoNombreLocalidad)
+        Me.Controls.Add(Me.btnCenso)
         Me.Controls.Add(Me.lblBuscarLocalidad)
         Me.Controls.Add(Me.txtBoxBuscarLocalidad)
         Me.Controls.Add(Me.dgvConsultas)
@@ -79,6 +152,7 @@ Partial Class Form1
         Me.Name = "Form1"
         Me.Text = "Elecciones"
         CType(Me.dgvConsultas, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.DsElecciones1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -88,4 +162,11 @@ Partial Class Form1
     Friend WithEvents dgvConsultas As DataGridView
     Friend WithEvents txtBoxBuscarLocalidad As TextBox
     Friend WithEvents lblBuscarLocalidad As Label
+    Friend WithEvents lblCenso As Label
+    Friend WithEvents txtBoxCensoNombreLocalidad As TextBox
+    Friend WithEvents btnCenso As Button
+    Friend WithEvents Label1 As Label
+    Friend WithEvents CalendarioCenso As MonthCalendar
+    Friend WithEvents lblCensoFecha As Label
+    Friend WithEvents DsElecciones1 As CapaDatos.DSElecciones
 End Class

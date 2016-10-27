@@ -61,9 +61,9 @@ Public Class Datos
         Return personas.ToList
     End Function
 
-    Public Function PersonasQuePuedenVotarEnUnaFecha(idLocalidad As Integer, fechaElecciones As Date, edadMinima As Integer) As List(Of Persona)
+    Public Function PersonasQuePuedenVotarEnUnaFecha(nombreLocalidad As String, fechaElecciones As Date, edadMinima As Integer) As List(Of Persona)
         Dim personas = From drp In dsElecciones.Persona
-                       Where drp.idLocalidad = idLocalidad AndAlso DateDiff(DateInterval.Year, fechaElecciones, drp.fechaNac) > edadMinima
+                       Where drp.nombre = nombreLocalidad AndAlso DateDiff(DateInterval.Year, fechaElecciones, drp.fechaNac) > edadMinima
                        Select New Persona(drp.idPersona, drp.dni, drp.apellido1, drp.apellido1, drp.nombrePila, drp.fechaNac, drp.domicilio, drp.codigoPostal, drp.idLocalidad)
 
         Return personas.ToList

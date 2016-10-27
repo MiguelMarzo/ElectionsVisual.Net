@@ -23,7 +23,7 @@ Public Class Negocio
     Public Function PersonasPorLocalidad(idLocalidad As Integer) As List(Of Persona)
         Return _datos.PersonasPorLocalidad(idLocalidad)
     End Function
-    Public Function PersonasQuePuedenVotarEnUnaFecha(idLocalidad As Integer, fechaElecciones As Date) As List(Of Persona)
+    Public Function PersonasQuePuedenVotarEnUnaFecha(idLocalidad As String, fechaElecciones As Date) As List(Of Persona)
         Return _datos.PersonasQuePuedenVotarEnUnaFecha(idLocalidad, fechaElecciones, EDAD_MINIMA)
     End Function
 
