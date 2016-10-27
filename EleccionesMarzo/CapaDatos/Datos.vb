@@ -47,8 +47,8 @@ Public Class Datos
 
     Public Function LocalidadesPorNombre(nombre As String) As List(Of Localidad)
         Dim localidades = From drp In dsElecciones.Localidad
-                          Where drp.nombre.StartsWith(nombre.Trim)
-                          Select New Localidad(drp.idLocalidad, drp.idProvincia, drp.nombre, drp.habitantes)
+                          Where drp.nombre.ToUpper.StartsWith(nombre.Trim.ToUpper)
+                          Select New Localidad(drp.idLocalidad, drp.nombre, drp.idProvincia, drp.habitantes)
 
         Return localidades.ToList
     End Function
