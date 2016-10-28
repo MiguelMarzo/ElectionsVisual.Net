@@ -4,7 +4,7 @@ Imports Entidades
 Public Class Negocio
 
     Private _datos As New Datos
-    Private Const EDAD_MINIMA As Integer = 18
+    Private Const EDAD_MINIMA As Long = 18
 
     Public Function DevolverComunidades() As List(Of Comunidad)
 
@@ -13,6 +13,14 @@ Public Class Negocio
     Public Function DevolverProvincias() As List(Of Provincia)
 
         Return _datos.DevolverProvincias
+    End Function
+
+    Public Function ProvinciasPorComunidad(nombreComunidad As String) As List(Of Provincia)
+        Return _datos.ProvinciasPorComunidad(nombreComunidad)
+    End Function
+
+    Public Function LocalidadesPorProvincia(nombreProvincia As String) As List(Of Localidad)
+        Return _datos.LocalidadesPorProvincia(nombreProvincia)
     End Function
 
     Public Function LocalidadesPorNombre(nombre As String) As List(Of Localidad)

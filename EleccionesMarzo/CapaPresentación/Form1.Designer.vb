@@ -34,6 +34,10 @@ Partial Class Form1
         Me.CalendarioCenso = New System.Windows.Forms.MonthCalendar()
         Me.lblCensoFecha = New System.Windows.Forms.Label()
         Me.DsElecciones1 = New CapaDatos.DSElecciones()
+        Me.cmbComunidad = New System.Windows.Forms.ComboBox()
+        Me.cmbProvincia = New System.Windows.Forms.ComboBox()
+        Me.lblCmbComunidades = New System.Windows.Forms.Label()
+        Me.lblCmbProvincias = New System.Windows.Forms.Label()
         CType(Me.dgvConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DsElecciones1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -133,11 +137,51 @@ Partial Class Form1
         Me.DsElecciones1.DataSetName = "DSElecciones"
         Me.DsElecciones1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
+        'cmbComunidad
+        '
+        Me.cmbComunidad.FormattingEnabled = True
+        Me.cmbComunidad.Location = New System.Drawing.Point(157, 528)
+        Me.cmbComunidad.Name = "cmbComunidad"
+        Me.cmbComunidad.Size = New System.Drawing.Size(192, 24)
+        Me.cmbComunidad.TabIndex = 10
+        '
+        'cmbProvincia
+        '
+        Me.cmbProvincia.FormattingEnabled = True
+        Me.cmbProvincia.Location = New System.Drawing.Point(157, 587)
+        Me.cmbProvincia.Name = "cmbProvincia"
+        Me.cmbProvincia.Size = New System.Drawing.Size(192, 24)
+        Me.cmbProvincia.TabIndex = 11
+        '
+        'lblCmbComunidades
+        '
+        Me.lblCmbComunidades.AutoSize = True
+        Me.lblCmbComunidades.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCmbComunidades.Location = New System.Drawing.Point(12, 526)
+        Me.lblCmbComunidades.Name = "lblCmbComunidades"
+        Me.lblCmbComunidades.Size = New System.Drawing.Size(133, 24)
+        Me.lblCmbComunidades.TabIndex = 12
+        Me.lblCmbComunidades.Text = "Comunidades:"
+        '
+        'lblCmbProvincias
+        '
+        Me.lblCmbProvincias.AutoSize = True
+        Me.lblCmbProvincias.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCmbProvincias.Location = New System.Drawing.Point(44, 585)
+        Me.lblCmbProvincias.Name = "lblCmbProvincias"
+        Me.lblCmbProvincias.Size = New System.Drawing.Size(101, 24)
+        Me.lblCmbProvincias.TabIndex = 13
+        Me.lblCmbProvincias.Text = "Provincias:"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1279, 997)
+        Me.Controls.Add(Me.lblCmbProvincias)
+        Me.Controls.Add(Me.lblCmbComunidades)
+        Me.Controls.Add(Me.cmbProvincia)
+        Me.Controls.Add(Me.cmbComunidad)
         Me.Controls.Add(Me.lblCensoFecha)
         Me.Controls.Add(Me.CalendarioCenso)
         Me.Controls.Add(Me.Label1)
@@ -169,4 +213,8 @@ Partial Class Form1
     Friend WithEvents CalendarioCenso As MonthCalendar
     Friend WithEvents lblCensoFecha As Label
     Friend WithEvents DsElecciones1 As CapaDatos.DSElecciones
+    Friend WithEvents cmbComunidad As ComboBox
+    Friend WithEvents cmbProvincia As ComboBox
+    Friend WithEvents lblCmbComunidades As Label
+    Friend WithEvents lblCmbProvincias As Label
 End Class
