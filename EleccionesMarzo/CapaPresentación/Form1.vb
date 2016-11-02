@@ -3,11 +3,11 @@ Imports Entidades
 Public Class Form1
     Private _negocio As New Negocio
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Dim comunidades As New List(Of Comunidad)
-        comunidades = _negocio.DevolverComunidades
-        For Each comunidad In comunidades
+        For Each comunidad In _negocio.DevolverComunidades
             cmbComunidad.Items.Add(comunidad.Nombre)
         Next
+        cmbProvincia.Enabled = False
+        cmbLocalidades.Enabled = False
     End Sub
 
     Private Sub btnBuscarLocalidad_Click(sender As Object, e As EventArgs) Handles btnBuscarLocalidad.Click
@@ -20,16 +20,24 @@ Public Class Form1
 
     Private Sub cmbComunidad_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbComunidad.SelectedIndexChanged
         cmbProvincia.Items.Clear()
-        Dim provincias As New List(Of Provincia)
-        provincias = _negocio.ProvinciasPorComunidad(cmbComunidad.SelectedItem.ToString.Trim)
-        For Each provincia In provincias
+        For Each provincia In _negocio.ProvinciasPorComunidad(cmbComunidad.SelectedItem.ToString)
             cmbProvincia.Items.Add(provincia.Nombre)
         Next
+        cmbProvincia.Enabled = True
     End Sub
 
     Private Sub cmbProvincia_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbProvincia.SelectedIndexChanged
-        Dim localidades As New List(Of Localidad)
-        localidades = _negocio.LocalidadesPorProvincia(cmbProvincia.SelectedItem.ToString.Trim)
-        dgvConsultas.DataSource = localidades
+        dgvConsultas.DataSource = _negocio.LocalidadesPorProvincia(cmbProvincia.SelectedItem.ToString)
+        cmbLocalidades.Items.Clear()
+        For Each localidad In _negocio.LocalidadesPorProvincia(cmbProvincia.SelectedItem.ToString)
+            cmbLocalidades.Items.Add(localidad.nombre.ToString.Trim)
+        Next
+        cmbLocalidades.Enabled = True
+    End Sub
+
+    Private Sub cmbLocalidades_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbLocalidades.SelectedIndexChanged
+        Dim votantes As New List(Of Persona)
+        votantes = _negocio.PersonasPorLocalidad(cmbLocalidades.SelectedItem.Trim)
+        dgvConsultas.DataSource = votantes
     End Sub
 End Class

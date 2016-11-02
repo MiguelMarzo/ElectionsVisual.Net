@@ -6,7 +6,7 @@ Public Class Persona : Implements IEquatable(Of Persona)
     Public Property apellido1 As String
     Public Property apellido2 As String
     Public Property nombrePila As String
-    Public Property nombreCompleto As String = nombrePila & " " & apellido1 & " " & apellido2
+    Public Property nombreCompleto As String
     Public Property fechaNac As Date
     Public Property domicilio As String
     Public Property codigoPostal As String
@@ -24,6 +24,7 @@ Public Class Persona : Implements IEquatable(Of Persona)
         Me.domicilio = domicilio
         Me.codigoPostal = codigoPostal
         Me.idLocalidad = idLocalidad
+        Me.nombreCompleto = nombrePila & " " & apellido1 & " " & apellido2
     End Sub
     Public Overloads Function Equals(other As Persona) As Boolean Implements IEquatable(Of Persona).Equals
         Return Id.ToUpper.Equals(other.Id.ToUpper)
