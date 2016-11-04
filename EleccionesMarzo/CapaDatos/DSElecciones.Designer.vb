@@ -1363,8 +1363,6 @@ Partial Public Class DSElecciones
         
         Private columnidProvincia As Global.System.Data.DataColumn
         
-        Private columnhabitantes As Global.System.Data.DataColumn
-        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub New()
@@ -1425,14 +1423,6 @@ Partial Public Class DSElecciones
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property habitantesColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnhabitantes
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -1469,9 +1459,9 @@ Partial Public Class DSElecciones
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Overloads Function AddLocalidadRow(ByVal idLocalidad As Integer, ByVal nombre As String, ByVal parentProvinciaRowByFK_Localidad_Provincia As ProvinciaRow, ByVal habitantes As Integer) As LocalidadRow
+        Public Overloads Function AddLocalidadRow(ByVal idLocalidad As Integer, ByVal nombre As String, ByVal parentProvinciaRowByFK_Localidad_Provincia As ProvinciaRow) As LocalidadRow
             Dim rowLocalidadRow As LocalidadRow = CType(Me.NewRow,LocalidadRow)
-            Dim columnValuesArray() As Object = New Object() {idLocalidad, nombre, Nothing, habitantes}
+            Dim columnValuesArray() As Object = New Object() {idLocalidad, nombre, Nothing}
             If (Not (parentProvinciaRowByFK_Localidad_Provincia) Is Nothing) Then
                 columnValuesArray(2) = parentProvinciaRowByFK_Localidad_Provincia(0)
             End If
@@ -1506,7 +1496,6 @@ Partial Public Class DSElecciones
             Me.columnidLocalidad = MyBase.Columns("idLocalidad")
             Me.columnnombre = MyBase.Columns("nombre")
             Me.columnidProvincia = MyBase.Columns("idProvincia")
-            Me.columnhabitantes = MyBase.Columns("habitantes")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -1518,8 +1507,6 @@ Partial Public Class DSElecciones
             MyBase.Columns.Add(Me.columnnombre)
             Me.columnidProvincia = New Global.System.Data.DataColumn("idProvincia", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnidProvincia)
-            Me.columnhabitantes = New Global.System.Data.DataColumn("habitantes", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnhabitantes)
             Me.Constraints.Add(New Global.System.Data.UniqueConstraint("Constraint1", New Global.System.Data.DataColumn() {Me.columnidLocalidad}, true))
             Me.columnidLocalidad.AllowDBNull = false
             Me.columnidLocalidad.Unique = true
@@ -2158,21 +2145,6 @@ Partial Public Class DSElecciones
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property habitantes() As Integer
-            Get
-                Try 
-                    Return CType(Me(Me.tableLocalidad.habitantesColumn),Integer)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'habitantes' in table 'Localidad' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableLocalidad.habitantesColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property ProvinciaRow() As ProvinciaRow
             Get
                 Return CType(Me.GetParentRow(Me.Table.ParentRelations("FK_Localidad_Provincia")),ProvinciaRow)
@@ -2204,18 +2176,6 @@ Partial Public Class DSElecciones
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetidProvinciaNull()
             Me(Me.tableLocalidad.idProvinciaColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IshabitantesNull() As Boolean
-            Return Me.IsNull(Me.tableLocalidad.habitantesColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SethabitantesNull()
-            Me(Me.tableLocalidad.habitantesColumn) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -3874,56 +3834,45 @@ Namespace DSEleccionesTableAdapters
             tableMapping.ColumnMappings.Add("idLocalidad", "idLocalidad")
             tableMapping.ColumnMappings.Add("nombre", "nombre")
             tableMapping.ColumnMappings.Add("idProvincia", "idProvincia")
-            tableMapping.ColumnMappings.Add("habitantes", "habitantes")
             Me._adapter.TableMappings.Add(tableMapping)
             Me._adapter.DeleteCommand = New Global.System.Data.SqlClient.SqlCommand()
             Me._adapter.DeleteCommand.Connection = Me.Connection
-            Me._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[Localidad] WHERE (([idLocalidad] = @Original_idLocalidad) AND "& _ 
-                "((@IsNull_nombre = 1 AND [nombre] IS NULL) OR ([nombre] = @Original_nombre)) AND"& _ 
-                " ((@IsNull_idProvincia = 1 AND [idProvincia] IS NULL) OR ([idProvincia] = @Origi"& _ 
-                "nal_idProvincia)) AND ((@IsNull_habitantes = 1 AND [habitantes] IS NULL) OR ([ha"& _ 
-                "bitantes] = @Original_habitantes)))"
+            Me._adapter.DeleteCommand.CommandText = "DELETE FROM [Localidad] WHERE (([idLocalidad] = @Original_idLocalidad) AND ((@IsN"& _ 
+                "ull_nombre = 1 AND [nombre] IS NULL) OR ([nombre] = @Original_nombre)) AND ((@Is"& _ 
+                "Null_idProvincia = 1 AND [idProvincia] IS NULL) OR ([idProvincia] = @Original_id"& _ 
+                "Provincia)))"
             Me._adapter.DeleteCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_idLocalidad", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idLocalidad", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
             Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_nombre", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "nombre", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_nombre", Global.System.Data.SqlDbType.NChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "nombre", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_nombre", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "nombre", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
             Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_idProvincia", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idProvincia", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
             Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_idProvincia", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idProvincia", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_habitantes", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "habitantes", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_habitantes", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "habitantes", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
             Me._adapter.InsertCommand = New Global.System.Data.SqlClient.SqlCommand()
             Me._adapter.InsertCommand.Connection = Me.Connection
-            Me._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[Localidad] ([idLocalidad], [nombre], [idProvincia], [habitante"& _ 
-                "s]) VALUES (@idLocalidad, @nombre, @idProvincia, @habitantes);"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT idLocalid"& _ 
-                "ad, nombre, idProvincia, habitantes FROM Localidad WHERE (idLocalidad = @idLocal"& _ 
-                "idad)"
+            Me._adapter.InsertCommand.CommandText = "INSERT INTO [Localidad] ([idLocalidad], [nombre], [idProvincia]) VALUES (@idLocal"& _ 
+                "idad, @nombre, @idProvincia);"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT idLocalidad, nombre, idProvincia FROM Loca"& _ 
+                "lidad WHERE (idLocalidad = @idLocalidad)"
             Me._adapter.InsertCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@idLocalidad", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idLocalidad", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@nombre", Global.System.Data.SqlDbType.NChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "nombre", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@nombre", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "nombre", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@idProvincia", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idProvincia", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@habitantes", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "habitantes", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand = New Global.System.Data.SqlClient.SqlCommand()
             Me._adapter.UpdateCommand.Connection = Me.Connection
-            Me._adapter.UpdateCommand.CommandText = "UPDATE [dbo].[Localidad] SET [idLocalidad] = @idLocalidad, [nombre] = @nombre, [i"& _ 
-                "dProvincia] = @idProvincia, [habitantes] = @habitantes WHERE (([idLocalidad] = @"& _ 
-                "Original_idLocalidad) AND ((@IsNull_nombre = 1 AND [nombre] IS NULL) OR ([nombre"& _ 
-                "] = @Original_nombre)) AND ((@IsNull_idProvincia = 1 AND [idProvincia] IS NULL) "& _ 
-                "OR ([idProvincia] = @Original_idProvincia)) AND ((@IsNull_habitantes = 1 AND [ha"& _ 
-                "bitantes] IS NULL) OR ([habitantes] = @Original_habitantes)));"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT idLocalid"& _ 
-                "ad, nombre, idProvincia, habitantes FROM Localidad WHERE (idLocalidad = @idLocal"& _ 
-                "idad)"
+            Me._adapter.UpdateCommand.CommandText = "UPDATE [Localidad] SET [idLocalidad] = @idLocalidad, [nombre] = @nombre, [idProvi"& _ 
+                "ncia] = @idProvincia WHERE (([idLocalidad] = @Original_idLocalidad) AND ((@IsNul"& _ 
+                "l_nombre = 1 AND [nombre] IS NULL) OR ([nombre] = @Original_nombre)) AND ((@IsNu"& _ 
+                "ll_idProvincia = 1 AND [idProvincia] IS NULL) OR ([idProvincia] = @Original_idPr"& _ 
+                "ovincia)));"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT idLocalidad, nombre, idProvincia FROM Localidad WHERE (idLoc"& _ 
+                "alidad = @idLocalidad)"
             Me._adapter.UpdateCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@idLocalidad", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idLocalidad", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@nombre", Global.System.Data.SqlDbType.NChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "nombre", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@nombre", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "nombre", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@idProvincia", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idProvincia", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@habitantes", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "habitantes", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_idLocalidad", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idLocalidad", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_nombre", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "nombre", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_nombre", Global.System.Data.SqlDbType.NChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "nombre", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_nombre", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "nombre", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_idProvincia", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idProvincia", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_idProvincia", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idProvincia", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_habitantes", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "habitantes", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_habitantes", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "habitantes", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -3939,7 +3888,7 @@ Namespace DSEleccionesTableAdapters
             Me._commandCollection = New Global.System.Data.SqlClient.SqlCommand(0) {}
             Me._commandCollection(0) = New Global.System.Data.SqlClient.SqlCommand()
             Me._commandCollection(0).Connection = Me.Connection
-            Me._commandCollection(0).CommandText = "SELECT idLocalidad, nombre, idProvincia, habitantes FROM dbo.Localidad"
+            Me._commandCollection(0).CommandText = "SELECT idLocalidad, nombre, idProvincia FROM Localidad"
             Me._commandCollection(0).CommandType = Global.System.Data.CommandType.Text
         End Sub
         
@@ -3999,7 +3948,7 @@ Namespace DSEleccionesTableAdapters
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
          Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
          Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Delete, true)>  _
-        Public Overloads Overridable Function Delete(ByVal Original_idLocalidad As Integer, ByVal Original_nombre As String, ByVal Original_idProvincia As Global.System.Nullable(Of Integer), ByVal Original_habitantes As Global.System.Nullable(Of Integer)) As Integer
+        Public Overloads Overridable Function Delete(ByVal Original_idLocalidad As Integer, ByVal Original_nombre As String, ByVal Original_idProvincia As Global.System.Nullable(Of Integer)) As Integer
             Me.Adapter.DeleteCommand.Parameters(0).Value = CType(Original_idLocalidad,Integer)
             If (Original_nombre Is Nothing) Then
                 Me.Adapter.DeleteCommand.Parameters(1).Value = CType(1,Object)
@@ -4014,13 +3963,6 @@ Namespace DSEleccionesTableAdapters
             Else
                 Me.Adapter.DeleteCommand.Parameters(3).Value = CType(1,Object)
                 Me.Adapter.DeleteCommand.Parameters(4).Value = Global.System.DBNull.Value
-            End If
-            If (Original_habitantes.HasValue = true) Then
-                Me.Adapter.DeleteCommand.Parameters(5).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(6).Value = CType(Original_habitantes.Value,Integer)
-            Else
-                Me.Adapter.DeleteCommand.Parameters(5).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(6).Value = Global.System.DBNull.Value
             End If
             Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.DeleteCommand.Connection.State
             If ((Me.Adapter.DeleteCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
@@ -4041,7 +3983,7 @@ Namespace DSEleccionesTableAdapters
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
          Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
          Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Insert, true)>  _
-        Public Overloads Overridable Function Insert(ByVal idLocalidad As Integer, ByVal nombre As String, ByVal idProvincia As Global.System.Nullable(Of Integer), ByVal habitantes As Global.System.Nullable(Of Integer)) As Integer
+        Public Overloads Overridable Function Insert(ByVal idLocalidad As Integer, ByVal nombre As String, ByVal idProvincia As Global.System.Nullable(Of Integer)) As Integer
             Me.Adapter.InsertCommand.Parameters(0).Value = CType(idLocalidad,Integer)
             If (nombre Is Nothing) Then
                 Me.Adapter.InsertCommand.Parameters(1).Value = Global.System.DBNull.Value
@@ -4052,11 +3994,6 @@ Namespace DSEleccionesTableAdapters
                 Me.Adapter.InsertCommand.Parameters(2).Value = CType(idProvincia.Value,Integer)
             Else
                 Me.Adapter.InsertCommand.Parameters(2).Value = Global.System.DBNull.Value
-            End If
-            If (habitantes.HasValue = true) Then
-                Me.Adapter.InsertCommand.Parameters(3).Value = CType(habitantes.Value,Integer)
-            Else
-                Me.Adapter.InsertCommand.Parameters(3).Value = Global.System.DBNull.Value
             End If
             Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.InsertCommand.Connection.State
             If ((Me.Adapter.InsertCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
@@ -4077,7 +4014,7 @@ Namespace DSEleccionesTableAdapters
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
          Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
          Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Update, true)>  _
-        Public Overloads Overridable Function Update(ByVal idLocalidad As Integer, ByVal nombre As String, ByVal idProvincia As Global.System.Nullable(Of Integer), ByVal habitantes As Global.System.Nullable(Of Integer), ByVal Original_idLocalidad As Integer, ByVal Original_nombre As String, ByVal Original_idProvincia As Global.System.Nullable(Of Integer), ByVal Original_habitantes As Global.System.Nullable(Of Integer)) As Integer
+        Public Overloads Overridable Function Update(ByVal idLocalidad As Integer, ByVal nombre As String, ByVal idProvincia As Global.System.Nullable(Of Integer), ByVal Original_idLocalidad As Integer, ByVal Original_nombre As String, ByVal Original_idProvincia As Global.System.Nullable(Of Integer)) As Integer
             Me.Adapter.UpdateCommand.Parameters(0).Value = CType(idLocalidad,Integer)
             If (nombre Is Nothing) Then
                 Me.Adapter.UpdateCommand.Parameters(1).Value = Global.System.DBNull.Value
@@ -4089,32 +4026,20 @@ Namespace DSEleccionesTableAdapters
             Else
                 Me.Adapter.UpdateCommand.Parameters(2).Value = Global.System.DBNull.Value
             End If
-            If (habitantes.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(3).Value = CType(habitantes.Value,Integer)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(3).Value = Global.System.DBNull.Value
-            End If
-            Me.Adapter.UpdateCommand.Parameters(4).Value = CType(Original_idLocalidad,Integer)
+            Me.Adapter.UpdateCommand.Parameters(3).Value = CType(Original_idLocalidad,Integer)
             If (Original_nombre Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(5).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(6).Value = Global.System.DBNull.Value
+                Me.Adapter.UpdateCommand.Parameters(4).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(5).Value = Global.System.DBNull.Value
             Else
-                Me.Adapter.UpdateCommand.Parameters(5).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(6).Value = CType(Original_nombre,String)
+                Me.Adapter.UpdateCommand.Parameters(4).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(5).Value = CType(Original_nombre,String)
             End If
             If (Original_idProvincia.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(7).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(8).Value = CType(Original_idProvincia.Value,Integer)
+                Me.Adapter.UpdateCommand.Parameters(6).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(7).Value = CType(Original_idProvincia.Value,Integer)
             Else
-                Me.Adapter.UpdateCommand.Parameters(7).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(8).Value = Global.System.DBNull.Value
-            End If
-            If (Original_habitantes.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(9).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(10).Value = CType(Original_habitantes.Value,Integer)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(9).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(10).Value = Global.System.DBNull.Value
+                Me.Adapter.UpdateCommand.Parameters(6).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(7).Value = Global.System.DBNull.Value
             End If
             Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.UpdateCommand.Connection.State
             If ((Me.Adapter.UpdateCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
@@ -4135,8 +4060,8 @@ Namespace DSEleccionesTableAdapters
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
          Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
          Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Update, true)>  _
-        Public Overloads Overridable Function Update(ByVal nombre As String, ByVal idProvincia As Global.System.Nullable(Of Integer), ByVal habitantes As Global.System.Nullable(Of Integer), ByVal Original_idLocalidad As Integer, ByVal Original_nombre As String, ByVal Original_idProvincia As Global.System.Nullable(Of Integer), ByVal Original_habitantes As Global.System.Nullable(Of Integer)) As Integer
-            Return Me.Update(Original_idLocalidad, nombre, idProvincia, habitantes, Original_idLocalidad, Original_nombre, Original_idProvincia, Original_habitantes)
+        Public Overloads Overridable Function Update(ByVal nombre As String, ByVal idProvincia As Global.System.Nullable(Of Integer), ByVal Original_idLocalidad As Integer, ByVal Original_nombre As String, ByVal Original_idProvincia As Global.System.Nullable(Of Integer)) As Integer
+            Return Me.Update(Original_idLocalidad, nombre, idProvincia, Original_idLocalidad, Original_nombre, Original_idProvincia)
         End Function
     End Class
     

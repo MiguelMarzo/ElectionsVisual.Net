@@ -7,19 +7,23 @@ Public Class Datos
     End Sub
     Private Sub CrearDataSetCompleto()
         dsElecciones = New DSElecciones
-        Dim daComunidades As New DSEleccionesTableAdapters.ComunidadTableAdapter
-        ' Adaptador para poder traer la table comunidades a la memoria de visual
-        daComunidades.Fill(dsElecciones.Comunidad)
-        ' El metodo fill llena mediante el adaptador la tabla Comunidad.
-        Dim daProvincia As New DSEleccionesTableAdapters.ProvinciaTableAdapter
-        daProvincia.Fill(dsElecciones.Provincia)
-        ' Hacemos los mismo para la tabla Provincia.
-        Dim daLocalidad As New DSEleccionesTableAdapters.LocalidadTableAdapter
-        daLocalidad.Fill(dsElecciones.Localidad)
-        'Lo mismo con LOCALIDAD
-        Dim daPersona As New DSEleccionesTableAdapters.PersonaTableAdapter
-        daPersona.Fill(dsElecciones.Persona)
-        'Tabién PERSONA
+        Try
+            Dim daComunidades As New DSEleccionesTableAdapters.ComunidadTableAdapter
+            ' Adaptador para poder traer la table comunidades a la memoria de visual
+            daComunidades.Fill(dsElecciones.Comunidad)
+            ' El metodo fill llena mediante el adaptador la tabla Comunidad.
+            Dim daProvincia As New DSEleccionesTableAdapters.ProvinciaTableAdapter
+            daProvincia.Fill(dsElecciones.Provincia)
+            ' Hacemos los mismo para la tabla Provincia.
+            Dim daLocalidad As New DSEleccionesTableAdapters.LocalidadTableAdapter
+            daLocalidad.Fill(dsElecciones.Localidad)
+            'Lo mismo con LOCALIDAD
+            Dim daPersona As New DSEleccionesTableAdapters.PersonaTableAdapter
+            daPersona.Fill(dsElecciones.Persona)
+            'Tabién PERSONA
+        Catch ex As Exception
+            MsgBox("error")
+        End Try
     End Sub
 
     Public Function DevolverComunidades() As List(Of Comunidad)
@@ -49,7 +53,7 @@ Public Class Datos
         Dim localidades = From drp In dsElecciones.Localidad
                           Where drp.ProvinciaRow.nombre = nombreProvincia
                           Order By drp.nombre Ascending
-                          Select New Localidad(drp.idLocalidad, drp.nombre, drp.idProvincia, drp.habitantes)
+                          Select New Localidad(drp.idLocalidad, drp.nombre, drp.idProvincia, 0)
 
         Return localidades.ToList
     End Function
@@ -57,7 +61,7 @@ Public Class Datos
     Public Function LocalidadesPorNombre(nombre As String) As List(Of Localidad)
         Dim localidades = From drp In dsElecciones.Localidad
                           Where drp.nombre.ToUpper.StartsWith(nombre.Trim.ToUpper)
-                          Select New Localidad(drp.idLocalidad, drp.nombre, drp.habitantes, drp.idProvincia)
+                          Select New Localidad(drp.idLocalidad, drp.nombre, 0, drp.idProvincia)
 
         Return localidades.ToList
     End Function
