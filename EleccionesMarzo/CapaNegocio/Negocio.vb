@@ -4,7 +4,7 @@ Imports Entidades
 Public Class Negocio
 
     Private _datos As New Datos
-    Private Const EDAD_MINIMA As Long = 18
+    Private Const EDAD_MINIMA As Long = 6574
 
     Public Function DevolverComunidades() As List(Of Comunidad)
 
