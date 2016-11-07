@@ -73,6 +73,7 @@ Public Class Datos
         End If
         Dim personas = From drp In dsElecciones.Persona
                        Where drp.idLocalidad = idLocalidad
+                       Order By drp.nombre
                        Select New Persona(drp.idPersona, drp.dni, drp.apellido1.Trim, drp.apellido2.Trim, drp.nombrePila.Trim, drp.fechaNac, drp.domicilio.Trim, drp.codigoPostal.Trim, drp.idLocalidad)
 
         Return personas.ToList
@@ -84,6 +85,7 @@ Public Class Datos
         End If
         Dim personas = From drp In dsElecciones.Persona
                        Where drp.idLocalidad = idLocalidad AndAlso DateDiff(DateInterval.Day, drp.fechaNac, fechaElecciones) >= edadMinima
+                       Order By drp.nombre
                        Select New Persona(drp.idPersona, drp.dni, drp.apellido1.Trim, drp.apellido2.Trim, drp.nombrePila.Trim, drp.fechaNac, drp.domicilio.Trim, drp.codigoPostal.Trim, drp.idLocalidad)
 
         Return personas.ToList
