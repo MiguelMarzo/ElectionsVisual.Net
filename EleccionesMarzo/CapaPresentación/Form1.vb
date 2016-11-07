@@ -15,7 +15,9 @@ Public Class Form1
     End Sub
 
     Private Sub btnCenso_Click(sender As Object, e As EventArgs) Handles btnCenso.Click
-        dgvConsultas.DataSource = _negocio.PersonasQuePuedenVotarEnUnaFecha(txtBoxCensoNombreLocalidad.Text, CalendarioCenso.SelectionRange.Start.ToShortDateString)
+        Dim localidad = _negocio.LocalidadesPorNombre(txtBoxCensoNombreLocalidad.Text)
+        Dim idLocalidad = localidad(0).Id
+        dgvConsultas.DataSource = _negocio.PersonasQuePuedenVotarEnUnaFecha(idLocalidad, CalendarioCenso.SelectionRange.Start.ToShortDateString)
     End Sub
 
     Private Sub cmbComunidad_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbComunidad.SelectedIndexChanged
@@ -37,7 +39,11 @@ Public Class Form1
 
     Private Sub cmbLocalidades_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbLocalidades.SelectedIndexChanged
         Dim votantes As New List(Of Persona)
-        votantes = _negocio.PersonasPorLocalidad(cmbLocalidades.SelectedItem.Trim)
-        dgvConsultas.DataSource = votantes
+        For Each localidades In _negocio.LocalidadesPorProvincia(cmbProvincia.SelectedItem)
+            If localidades.nombre.Trim = cmbLocalidades.SelectedItem.ToString.Trim Then
+                dgvConsultas.DataSource = _negocio.PersonasQuePuedenVotarEnUnaFecha(localidades.Id, Today)
+            End If
+        Next
+
     End Sub
 End Class

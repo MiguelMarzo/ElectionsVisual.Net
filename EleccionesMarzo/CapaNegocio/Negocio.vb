@@ -28,11 +28,11 @@ Public Class Negocio
         Return _datos.LocalidadesPorNombre(nombre)
     End Function
 
-    Public Function PersonasPorLocalidad(nombreLocalidad As String) As List(Of Persona)
-        Return _datos.PersonasPorLocalidad(nombreLocalidad)
+    Public Function PersonasPorLocalidad(idLocalidad As String) As List(Of Persona)
+        Return _datos.PersonasPorLocalidad(idLocalidad)
     End Function
-    Public Function PersonasQuePuedenVotarEnUnaFecha(nombreLocalidad As String, fechaElecciones As Date) As List(Of Persona)
-        Return _datos.PersonasQuePuedenVotarEnUnaFecha(nombreLocalidad, fechaElecciones, EDAD_MINIMA)
+    Public Function PersonasQuePuedenVotarEnUnaFecha(idLocalidad As String, fechaElecciones As Date) As List(Of Persona)
+        Return _datos.PersonasQuePuedenVotarEnUnaFecha(idLocalidad, fechaElecciones, EDAD_MINIMA)
     End Function
 
 End Class

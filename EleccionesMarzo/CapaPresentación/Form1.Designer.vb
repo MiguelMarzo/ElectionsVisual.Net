@@ -40,6 +40,7 @@ Partial Class Form1
         Me.lblLocalidades = New System.Windows.Forms.Label()
         Me.cmbLocalidades = New System.Windows.Forms.ComboBox()
         Me.DsElecciones1 = New CapaDatos.DSElecciones()
+        Me.Label2 = New System.Windows.Forms.Label()
         CType(Me.dgvConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DsElecciones1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -193,11 +194,22 @@ Partial Class Form1
         Me.DsElecciones1.DataSetName = "DSElecciones"
         Me.DsElecciones1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(98, 107)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(153, 24)
+        Me.Label2.TabIndex = 16
+        Me.Label2.Text = "Buscar localidad:"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1262, 807)
+        Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.lblLocalidades)
         Me.Controls.Add(Me.cmbLocalidades)
         Me.Controls.Add(Me.lblCmbProvincias)
@@ -241,4 +253,5 @@ Partial Class Form1
     Friend WithEvents lblCmbProvincias As Label
     Friend WithEvents lblLocalidades As Label
     Friend WithEvents cmbLocalidades As ComboBox
+    Friend WithEvents Label2 As Label
 End Class
