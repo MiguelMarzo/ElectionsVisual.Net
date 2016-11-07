@@ -83,11 +83,25 @@ Public Class Datos
         If Not IsNothing(daPersona) Then
             daPersona.FillBy(dsElecciones.Persona, idLocalidad)
         End If
+        'DateDiff(DateInterval.Day, drp.fechaNac, fechaElecciones) >= edadMinima
         Dim personas = From drp In dsElecciones.Persona
-                       Where drp.idLocalidad = idLocalidad AndAlso DateDiff(DateInterval.Day, drp.fechaNac, fechaElecciones) >= edadMinima
+                       Where drp.idLocalidad = idLocalidad AndAlso puedeVotar(drp.fechaNac, fechaElecciones)
                        Order By drp.nombre
                        Select New Persona(drp.idPersona, drp.dni, drp.apellido1.Trim, drp.apellido2.Trim, drp.nombrePila.Trim, drp.fechaNac, drp.domicilio.Trim, drp.codigoPostal.Trim, drp.idLocalidad)
 
         Return personas.ToList
+    End Function
+
+    Private Function puedeVotar(fechaNac As Date, fechaElecciones As Date) As Boolean
+        Dim edadEnElecciones = fechaElecciones.Year - fechaNac.Year
+        Dim m = fechaElecciones.Month - fechaNac.Month
+        If (m < 0 Or (m = 0 AndAlso Today.Date < fechaNac.Date)) Then
+            edadEnElecciones = edadEnElecciones - 1
+        End If
+        If edadEnElecciones >= 18 Then
+            Return True
+        Else
+            Return False
+        End If
     End Function
 End Class
