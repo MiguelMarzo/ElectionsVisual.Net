@@ -39,8 +39,9 @@ Partial Class Form1
         Me.lblCmbProvincias = New System.Windows.Forms.Label()
         Me.lblLocalidades = New System.Windows.Forms.Label()
         Me.cmbLocalidades = New System.Windows.Forms.ComboBox()
-        Me.DsElecciones1 = New CapaDatos.DSElecciones()
         Me.Label2 = New System.Windows.Forms.Label()
+        Me.DsElecciones1 = New CapaDatos.DSElecciones()
+        Me.btnVotar = New System.Windows.Forms.Button()
         CType(Me.dgvConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DsElecciones1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -189,11 +190,6 @@ Partial Class Form1
         Me.cmbLocalidades.Size = New System.Drawing.Size(192, 24)
         Me.cmbLocalidades.TabIndex = 14
         '
-        'DsElecciones1
-        '
-        Me.DsElecciones1.DataSetName = "DSElecciones"
-        Me.DsElecciones1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
-        '
         'Label2
         '
         Me.Label2.AutoSize = True
@@ -204,11 +200,26 @@ Partial Class Form1
         Me.Label2.TabIndex = 16
         Me.Label2.Text = "Buscar localidad:"
         '
+        'DsElecciones1
+        '
+        Me.DsElecciones1.DataSetName = "DSElecciones"
+        Me.DsElecciones1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
+        '
+        'btnVotar
+        '
+        Me.btnVotar.Location = New System.Drawing.Point(157, 707)
+        Me.btnVotar.Name = "btnVotar"
+        Me.btnVotar.Size = New System.Drawing.Size(183, 70)
+        Me.btnVotar.TabIndex = 17
+        Me.btnVotar.Text = "Ir a Votar"
+        Me.btnVotar.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1262, 807)
+        Me.Controls.Add(Me.btnVotar)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.lblLocalidades)
         Me.Controls.Add(Me.cmbLocalidades)
@@ -254,4 +265,5 @@ Partial Class Form1
     Friend WithEvents lblLocalidades As Label
     Friend WithEvents cmbLocalidades As ComboBox
     Friend WithEvents Label2 As Label
+    Friend WithEvents btnVotar As Button
 End Class

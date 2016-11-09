@@ -3,22 +3,43 @@ Public Class Datos
 
     Private dsElecciones As DSElecciones
     Dim daPersona As New DSEleccionesTableAdapters.PersonaTableAdapter
+    Public Sub iki()
+        Dim cadCon As String = My.Settings.EleccionesMarzoConnectionString
+    End Sub
     Public Sub New()
         CrearDataSetCompleto()
     End Sub
     Private Sub CrearDataSetCompleto()
         dsElecciones = New DSElecciones
         Try
-            Dim daComunidades As New DSEleccionesTableAdapters.ComunidadTableAdapter
             ' Adaptador para poder traer la table comunidades a la memoria de visual
-            daComunidades.Fill(dsElecciones.Comunidad)
-            ' El metodo fill llena mediante el adaptador la tabla Comunidad.
+            Dim daComunidades As New DSEleccionesTableAdapters.ComunidadTableAdapter
+            daComunidades.Fill(dsElecciones.Comunidad) ' El metodo fill llena mediante el adaptador la tabla Comunidad.
+
+            'Adaptador para Provincia
             Dim daProvincia As New DSEleccionesTableAdapters.ProvinciaTableAdapter
             daProvincia.Fill(dsElecciones.Provincia)
-            ' Hacemos los mismo para la tabla Provincia.
+
+            'Adaptador para Localidad
             Dim daLocalidad As New DSEleccionesTableAdapters.LocalidadTableAdapter
             daLocalidad.Fill(dsElecciones.Localidad)
-            'Lo mismo con LOCALIDAD
+
+            'Adaptador para Elecciones
+            Dim daElecciones As New DSEleccionesTableAdapters.EleccionesTableAdapter
+            daElecciones.Fill(dsElecciones.Elecciones)
+
+            'Adaptador para Partidos
+            Dim daPartidos As New DSEleccionesTableAdapters.PartidosTableAdapter
+            daPartidos.Fill(dsElecciones.Partidos)
+
+            'Adaptador para Votos
+            Dim daVotos As New DSEleccionesTableAdapters.VotosTableAdapter
+            daVotos.Fill(dsElecciones.Votos)
+
+            'Adaptador para PartidosPorLocalidades
+            Dim daPartidosPorLocalidadesYElecciones As New DSEleccionesTableAdapters.PartidosPorLocalidadTableAdapter
+            daPartidosPorLocalidadesYElecciones.Fill(dsElecciones.PartidosPorLocalidad)
+
         Catch ex As Exception
             MsgBox("error")
         End Try
@@ -93,12 +114,17 @@ Public Class Datos
     End Function
 
     Private Function puedeVotar(fechaNac As Date, fechaElecciones As Date) As Boolean
-        Dim edadEnElecciones = fechaElecciones.Year - fechaNac.Year
-        Dim m = fechaElecciones.Month - fechaNac.Month
-        If (m < 0 Or (m = 0 AndAlso Today.Date < fechaNac.Date)) Then
-            edadEnElecciones = edadEnElecciones - 1
+        Dim años = fechaElecciones.Year - fechaNac.Year
+        Dim mes = fechaElecciones.Month - fechaNac.Month
+        Dim day = fechaElecciones.Day - fechaNac.Day
+        If años = 18 And mes = 0 Then
+            If day >= 0 Then
+                Return True
+            Else
+                Return False
+            End If
         End If
-        If edadEnElecciones >= 18 Then
+        If años > 18 Then
             Return True
         Else
             Return False
