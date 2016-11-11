@@ -30,7 +30,7 @@ Partial Class Form1
         Me.lblCenso = New System.Windows.Forms.Label()
         Me.txtBoxCensoNombreLocalidad = New System.Windows.Forms.TextBox()
         Me.btnCenso = New System.Windows.Forms.Button()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.lblCensoLocalidad = New System.Windows.Forms.Label()
         Me.CalendarioCenso = New System.Windows.Forms.MonthCalendar()
         Me.lblCensoFecha = New System.Windows.Forms.Label()
         Me.cmbComunidad = New System.Windows.Forms.ComboBox()
@@ -39,9 +39,11 @@ Partial Class Form1
         Me.lblCmbProvincias = New System.Windows.Forms.Label()
         Me.lblLocalidades = New System.Windows.Forms.Label()
         Me.cmbLocalidades = New System.Windows.Forms.ComboBox()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.DsElecciones1 = New CapaDatos.DSElecciones()
+        Me.lblSeparador1 = New System.Windows.Forms.Label()
         Me.btnVotar = New System.Windows.Forms.Button()
+        Me.DsElecciones1 = New CapaDatos.DSElecciones()
+        Me.lblSeparador2 = New System.Windows.Forms.Label()
+        Me.lblSeparador3 = New System.Windows.Forms.Label()
         CType(Me.dgvConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DsElecciones1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -109,15 +111,15 @@ Partial Class Form1
         Me.btnCenso.Text = "Consultar"
         Me.btnCenso.UseVisualStyleBackColor = True
         '
-        'Label1
+        'lblCensoLocalidad
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(53, 196)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(75, 18)
-        Me.Label1.TabIndex = 7
-        Me.Label1.Text = "Localidad:"
+        Me.lblCensoLocalidad.AutoSize = True
+        Me.lblCensoLocalidad.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCensoLocalidad.Location = New System.Drawing.Point(53, 196)
+        Me.lblCensoLocalidad.Name = "lblCensoLocalidad"
+        Me.lblCensoLocalidad.Size = New System.Drawing.Size(75, 18)
+        Me.lblCensoLocalidad.TabIndex = 7
+        Me.lblCensoLocalidad.Text = "Localidad:"
         '
         'CalendarioCenso
         '
@@ -190,37 +192,59 @@ Partial Class Form1
         Me.cmbLocalidades.Size = New System.Drawing.Size(192, 24)
         Me.cmbLocalidades.TabIndex = 14
         '
-        'Label2
+        'lblSeparador1
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(98, 107)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(153, 24)
-        Me.Label2.TabIndex = 16
-        Me.Label2.Text = "Buscar localidad:"
-        '
-        'DsElecciones1
-        '
-        Me.DsElecciones1.DataSetName = "DSElecciones"
-        Me.DsElecciones1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
+        Me.lblSeparador1.AutoSize = True
+        Me.lblSeparador1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSeparador1.Location = New System.Drawing.Point(12, 117)
+        Me.lblSeparador1.Name = "lblSeparador1"
+        Me.lblSeparador1.Size = New System.Drawing.Size(480, 24)
+        Me.lblSeparador1.TabIndex = 16
+        Me.lblSeparador1.Text = "_______________________________________________"
         '
         'btnVotar
         '
-        Me.btnVotar.Location = New System.Drawing.Point(157, 707)
+        Me.btnVotar.Location = New System.Drawing.Point(157, 725)
         Me.btnVotar.Name = "btnVotar"
         Me.btnVotar.Size = New System.Drawing.Size(183, 70)
         Me.btnVotar.TabIndex = 17
         Me.btnVotar.Text = "Ir a Votar"
         Me.btnVotar.UseVisualStyleBackColor = True
         '
+        'DsElecciones1
+        '
+        Me.DsElecciones1.DataSetName = "DSElecciones"
+        Me.DsElecciones1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
+        '
+        'lblSeparador2
+        '
+        Me.lblSeparador2.AutoSize = True
+        Me.lblSeparador2.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSeparador2.Location = New System.Drawing.Point(12, 487)
+        Me.lblSeparador2.Name = "lblSeparador2"
+        Me.lblSeparador2.Size = New System.Drawing.Size(480, 24)
+        Me.lblSeparador2.TabIndex = 18
+        Me.lblSeparador2.Text = "_______________________________________________"
+        '
+        'lblSeparador3
+        '
+        Me.lblSeparador3.AutoSize = True
+        Me.lblSeparador3.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSeparador3.Location = New System.Drawing.Point(12, 684)
+        Me.lblSeparador3.Name = "lblSeparador3"
+        Me.lblSeparador3.Size = New System.Drawing.Size(480, 24)
+        Me.lblSeparador3.TabIndex = 19
+        Me.lblSeparador3.Text = "_______________________________________________"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1262, 807)
+        Me.Controls.Add(Me.lblSeparador3)
+        Me.Controls.Add(Me.lblSeparador2)
         Me.Controls.Add(Me.btnVotar)
-        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.lblSeparador1)
         Me.Controls.Add(Me.lblLocalidades)
         Me.Controls.Add(Me.cmbLocalidades)
         Me.Controls.Add(Me.lblCmbProvincias)
@@ -229,7 +253,7 @@ Partial Class Form1
         Me.Controls.Add(Me.cmbComunidad)
         Me.Controls.Add(Me.lblCensoFecha)
         Me.Controls.Add(Me.CalendarioCenso)
-        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.lblCensoLocalidad)
         Me.Controls.Add(Me.lblCenso)
         Me.Controls.Add(Me.txtBoxCensoNombreLocalidad)
         Me.Controls.Add(Me.btnCenso)
@@ -254,7 +278,7 @@ Partial Class Form1
     Friend WithEvents lblCenso As Label
     Friend WithEvents txtBoxCensoNombreLocalidad As TextBox
     Friend WithEvents btnCenso As Button
-    Friend WithEvents Label1 As Label
+    Friend WithEvents lblCensoLocalidad As Label
     Friend WithEvents CalendarioCenso As MonthCalendar
     Friend WithEvents lblCensoFecha As Label
     Friend WithEvents DsElecciones1 As CapaDatos.DSElecciones
@@ -264,6 +288,8 @@ Partial Class Form1
     Friend WithEvents lblCmbProvincias As Label
     Friend WithEvents lblLocalidades As Label
     Friend WithEvents cmbLocalidades As ComboBox
-    Friend WithEvents Label2 As Label
+    Friend WithEvents lblSeparador1 As Label
     Friend WithEvents btnVotar As Button
+    Friend WithEvents lblSeparador2 As Label
+    Friend WithEvents lblSeparador3 As Label
 End Class

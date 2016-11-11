@@ -82,6 +82,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Partido.vb" />
+    <Compile Include="PartidosPorLocalidad.vb" />
     <Compile Include="Persona.vb" />
     <Compile Include="Provincia.vb" />
     <Compile Include="Voto.vb" />

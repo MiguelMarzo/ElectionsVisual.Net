@@ -45,4 +45,8 @@ Public Class Form1
         Next
 
     End Sub
+
+    Private Sub btnVotar_Click(sender As Object, e As EventArgs) Handles btnVotar.Click
+        frmVotar.Show()
+    End Sub
 End Class
