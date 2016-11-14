@@ -31,6 +31,8 @@ Partial Class frmVotar
         Me.lblSeparador = New System.Windows.Forms.Label()
         Me.lblDni = New System.Windows.Forms.Label()
         Me.txtDni = New System.Windows.Forms.TextBox()
+        Me.lblPartido = New System.Windows.Forms.Label()
+        Me.cmbPartidos = New System.Windows.Forms.ComboBox()
         Me.ComunidadTableAdapter1 = New CapaDatos.DSEleccionesTableAdapters.ComunidadTableAdapter()
         Me.SuspendLayout()
         '
@@ -103,7 +105,7 @@ Partial Class frmVotar
         '
         Me.lblDni.AutoSize = True
         Me.lblDni.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDni.Location = New System.Drawing.Point(101, 222)
+        Me.lblDni.Location = New System.Drawing.Point(101, 195)
         Me.lblDni.Name = "lblDni"
         Me.lblDni.Size = New System.Drawing.Size(145, 24)
         Me.lblDni.TabIndex = 22
@@ -112,10 +114,28 @@ Partial Class frmVotar
         'txtDni
         '
         Me.txtDni.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDni.Location = New System.Drawing.Point(273, 219)
+        Me.txtDni.Location = New System.Drawing.Point(273, 192)
         Me.txtDni.Name = "txtDni"
         Me.txtDni.Size = New System.Drawing.Size(192, 28)
         Me.txtDni.TabIndex = 21
+        '
+        'lblPartido
+        '
+        Me.lblPartido.AutoSize = True
+        Me.lblPartido.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblPartido.Location = New System.Drawing.Point(71, 232)
+        Me.lblPartido.Name = "lblPartido"
+        Me.lblPartido.Size = New System.Drawing.Size(175, 24)
+        Me.lblPartido.TabIndex = 24
+        Me.lblPartido.Text = "Partido al que votar:"
+        '
+        'cmbPartidos
+        '
+        Me.cmbPartidos.FormattingEnabled = True
+        Me.cmbPartidos.Location = New System.Drawing.Point(273, 234)
+        Me.cmbPartidos.Name = "cmbPartidos"
+        Me.cmbPartidos.Size = New System.Drawing.Size(192, 24)
+        Me.cmbPartidos.TabIndex = 25
         '
         'ComunidadTableAdapter1
         '
@@ -126,6 +146,8 @@ Partial Class frmVotar
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(653, 365)
+        Me.Controls.Add(Me.cmbPartidos)
+        Me.Controls.Add(Me.lblPartido)
         Me.Controls.Add(Me.lblDni)
         Me.Controls.Add(Me.txtDni)
         Me.Controls.Add(Me.lblSeparador)
@@ -151,4 +173,6 @@ Partial Class frmVotar
     Friend WithEvents lblSeparador As Label
     Friend WithEvents lblDni As Label
     Friend WithEvents txtDni As TextBox
+    Friend WithEvents lblPartido As Label
+    Friend WithEvents cmbPartidos As ComboBox
 End Class

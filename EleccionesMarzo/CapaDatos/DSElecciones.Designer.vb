@@ -55,6 +55,8 @@ Partial Public Class DSElecciones
     
     Private relationFK_Votos_Elecciones As Global.System.Data.DataRelation
     
+    Private relationFK_Votos_Partidos As Global.System.Data.DataRelation
+    
     Private relationFK_Votos_Persona As Global.System.Data.DataRelation
     
     Private _schemaSerializationMode As Global.System.Data.SchemaSerializationMode = Global.System.Data.SchemaSerializationMode.IncludeSchema
@@ -385,6 +387,7 @@ Partial Public Class DSElecciones
         Me.relationFK_Persona_Localidad = Me.Relations("FK_Persona_Localidad")
         Me.relationFK_Provincia_Comunidad = Me.Relations("FK_Provincia_Comunidad")
         Me.relationFK_Votos_Elecciones = Me.Relations("FK_Votos_Elecciones")
+        Me.relationFK_Votos_Partidos = Me.Relations("FK_Votos_Partidos")
         Me.relationFK_Votos_Persona = Me.Relations("FK_Votos_Persona")
     End Sub
     
@@ -426,6 +429,8 @@ Partial Public Class DSElecciones
         Me.Relations.Add(Me.relationFK_Provincia_Comunidad)
         Me.relationFK_Votos_Elecciones = New Global.System.Data.DataRelation("FK_Votos_Elecciones", New Global.System.Data.DataColumn() {Me.tableElecciones.idEleccionesColumn}, New Global.System.Data.DataColumn() {Me.tableVotos.idEleccionesColumn}, false)
         Me.Relations.Add(Me.relationFK_Votos_Elecciones)
+        Me.relationFK_Votos_Partidos = New Global.System.Data.DataRelation("FK_Votos_Partidos", New Global.System.Data.DataColumn() {Me.tablePartidos.idPartidoColumn}, New Global.System.Data.DataColumn() {Me.tableVotos.idPartidoColumn}, false)
+        Me.Relations.Add(Me.relationFK_Votos_Partidos)
         Me.relationFK_Votos_Persona = New Global.System.Data.DataRelation("FK_Votos_Persona", New Global.System.Data.DataColumn() {Me.tablePersona.idPersonaColumn}, New Global.System.Data.DataColumn() {Me.tableVotos.idPersonaColumn}, false)
         Me.Relations.Add(Me.relationFK_Votos_Persona)
     End Sub
@@ -2690,6 +2695,8 @@ Partial Public Class DSElecciones
         
         Private columnidElecciones As Global.System.Data.DataColumn
         
+        Private columnidPartido As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub New()
@@ -2742,6 +2749,14 @@ Partial Public Class DSElecciones
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property idPartidoColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnidPartido
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -2778,18 +2793,27 @@ Partial Public Class DSElecciones
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Overloads Function AddVotosRow(ByVal parentPersonaRowByFK_Votos_Persona As PersonaRow, ByVal parentEleccionesRowByFK_Votos_Elecciones As EleccionesRow) As VotosRow
+        Public Overloads Function AddVotosRow(ByVal parentPersonaRowByFK_Votos_Persona As PersonaRow, ByVal parentEleccionesRowByFK_Votos_Elecciones As EleccionesRow, ByVal parentPartidosRowByFK_Votos_Partidos As PartidosRow) As VotosRow
             Dim rowVotosRow As VotosRow = CType(Me.NewRow,VotosRow)
-            Dim columnValuesArray() As Object = New Object() {Nothing, Nothing}
+            Dim columnValuesArray() As Object = New Object() {Nothing, Nothing, Nothing}
             If (Not (parentPersonaRowByFK_Votos_Persona) Is Nothing) Then
                 columnValuesArray(0) = parentPersonaRowByFK_Votos_Persona(0)
             End If
             If (Not (parentEleccionesRowByFK_Votos_Elecciones) Is Nothing) Then
                 columnValuesArray(1) = parentEleccionesRowByFK_Votos_Elecciones(0)
             End If
+            If (Not (parentPartidosRowByFK_Votos_Partidos) Is Nothing) Then
+                columnValuesArray(2) = parentPartidosRowByFK_Votos_Partidos(0)
+            End If
             rowVotosRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowVotosRow)
             Return rowVotosRow
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function FindByidPersonaidEleccionesidPartido(ByVal idPersona As Integer, ByVal idElecciones As Integer, ByVal idPartido As Integer) As VotosRow
+            Return CType(Me.Rows.Find(New Object() {idPersona, idElecciones, idPartido}),VotosRow)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -2811,6 +2835,7 @@ Partial Public Class DSElecciones
         Friend Sub InitVars()
             Me.columnidPersona = MyBase.Columns("idPersona")
             Me.columnidElecciones = MyBase.Columns("idElecciones")
+            Me.columnidPartido = MyBase.Columns("idPartido")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -2820,6 +2845,12 @@ Partial Public Class DSElecciones
             MyBase.Columns.Add(Me.columnidPersona)
             Me.columnidElecciones = New Global.System.Data.DataColumn("idElecciones", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnidElecciones)
+            Me.columnidPartido = New Global.System.Data.DataColumn("idPartido", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnidPartido)
+            Me.Constraints.Add(New Global.System.Data.UniqueConstraint("Constraint1", New Global.System.Data.DataColumn() {Me.columnidPersona, Me.columnidElecciones, Me.columnidPartido}, true))
+            Me.columnidPersona.AllowDBNull = false
+            Me.columnidElecciones.AllowDBNull = false
+            Me.columnidPartido.AllowDBNull = false
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -3286,6 +3317,16 @@ Partial Public Class DSElecciones
                 Return New PartidosPorLocalidadRow(-1) {}
             Else
                 Return CType(MyBase.GetChildRows(Me.Table.ChildRelations("FK_PartidosPorLocalidad_Partidos")),PartidosPorLocalidadRow())
+            End If
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function GetVotosRows() As VotosRow()
+            If (Me.Table.ChildRelations("FK_Votos_Partidos") Is Nothing) Then
+                Return New VotosRow(-1) {}
+            Else
+                Return CType(MyBase.GetChildRows(Me.Table.ChildRelations("FK_Votos_Partidos")),VotosRow())
             End If
         End Function
     End Class
@@ -3811,11 +3852,7 @@ Partial Public Class DSElecciones
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property idPersona() As Integer
             Get
-                Try 
-                    Return CType(Me(Me.tableVotos.idPersonaColumn),Integer)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'idPersona' in table 'Votos' is DBNull.", e)
-                End Try
+                Return CType(Me(Me.tableVotos.idPersonaColumn),Integer)
             End Get
             Set
                 Me(Me.tableVotos.idPersonaColumn) = value
@@ -3826,14 +3863,21 @@ Partial Public Class DSElecciones
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property idElecciones() As Integer
             Get
-                Try 
-                    Return CType(Me(Me.tableVotos.idEleccionesColumn),Integer)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'idElecciones' in table 'Votos' is DBNull.", e)
-                End Try
+                Return CType(Me(Me.tableVotos.idEleccionesColumn),Integer)
             End Get
             Set
                 Me(Me.tableVotos.idEleccionesColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property idPartido() As Integer
+            Get
+                Return CType(Me(Me.tableVotos.idPartidoColumn),Integer)
+            End Get
+            Set
+                Me(Me.tableVotos.idPartidoColumn) = value
             End Set
         End Property
         
@@ -3850,6 +3894,17 @@ Partial Public Class DSElecciones
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property PartidosRow() As PartidosRow
+            Get
+                Return CType(Me.GetParentRow(Me.Table.ParentRelations("FK_Votos_Partidos")),PartidosRow)
+            End Get
+            Set
+                Me.SetParentRow(value, Me.Table.ParentRelations("FK_Votos_Partidos"))
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property PersonaRow() As PersonaRow
             Get
                 Return CType(Me.GetParentRow(Me.Table.ParentRelations("FK_Votos_Persona")),PersonaRow)
@@ -3858,30 +3913,6 @@ Partial Public Class DSElecciones
                 Me.SetParentRow(value, Me.Table.ParentRelations("FK_Votos_Persona"))
             End Set
         End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsidPersonaNull() As Boolean
-            Return Me.IsNull(Me.tableVotos.idPersonaColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetidPersonaNull()
-            Me(Me.tableVotos.idPersonaColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsidEleccionesNull() As Boolean
-            Return Me.IsNull(Me.tableVotos.idEleccionesColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetidEleccionesNull()
-            Me(Me.tableVotos.idEleccionesColumn) = Global.System.Convert.DBNull
-        End Sub
     End Class
     
     '''<summary>
@@ -7070,14 +7101,40 @@ Namespace DSEleccionesTableAdapters
             tableMapping.DataSetTable = "Votos"
             tableMapping.ColumnMappings.Add("idPersona", "idPersona")
             tableMapping.ColumnMappings.Add("idElecciones", "idElecciones")
+            tableMapping.ColumnMappings.Add("idPartido", "idPartido")
             Me._adapter.TableMappings.Add(tableMapping)
+            Me._adapter.DeleteCommand = New Global.System.Data.SqlClient.SqlCommand()
+            Me._adapter.DeleteCommand.Connection = Me.Connection
+            Me._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[Votos] WHERE (([idPersona] = @Original_idPersona) AND ([idElec"& _ 
+                "ciones] = @Original_idElecciones) AND ([idPartido] = @Original_idPartido))"
+            Me._adapter.DeleteCommand.CommandType = Global.System.Data.CommandType.Text
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_idPersona", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idPersona", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_idElecciones", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idElecciones", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_idPartido", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idPartido", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
             Me._adapter.InsertCommand = New Global.System.Data.SqlClient.SqlCommand()
             Me._adapter.InsertCommand.Connection = Me.Connection
-            Me._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[Votos] ([idPersona], [idElecciones]) VALUES (@idPersona, @idEl"& _ 
-                "ecciones)"
+            Me._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[Votos] ([idPersona], [idElecciones], [idPartido]) VALUES (@idP"& _ 
+                "ersona, @idElecciones, @idPartido);"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT idPersona, idElecciones, idPartido F"& _ 
+                "ROM Votos WHERE (idElecciones = @idElecciones) AND (idPartido = @idPartido) AND "& _ 
+                "(idPersona = @idPersona)"
             Me._adapter.InsertCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@idPersona", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idPersona", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@idElecciones", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idElecciones", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@idPartido", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idPartido", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand = New Global.System.Data.SqlClient.SqlCommand()
+            Me._adapter.UpdateCommand.Connection = Me.Connection
+            Me._adapter.UpdateCommand.CommandText = "UPDATE [dbo].[Votos] SET [idPersona] = @idPersona, [idElecciones] = @idElecciones"& _ 
+                ", [idPartido] = @idPartido WHERE (([idPersona] = @Original_idPersona) AND ([idEl"& _ 
+                "ecciones] = @Original_idElecciones) AND ([idPartido] = @Original_idPartido));"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"S"& _ 
+                "ELECT idPersona, idElecciones, idPartido FROM Votos WHERE (idElecciones = @idEle"& _ 
+                "cciones) AND (idPartido = @idPartido) AND (idPersona = @idPersona)"
+            Me._adapter.UpdateCommand.CommandType = Global.System.Data.CommandType.Text
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@idPersona", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idPersona", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@idElecciones", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idElecciones", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@idPartido", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idPartido", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_idPersona", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idPersona", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_idElecciones", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idElecciones", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_idPartido", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "idPartido", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -7093,7 +7150,7 @@ Namespace DSEleccionesTableAdapters
             Me._commandCollection = New Global.System.Data.SqlClient.SqlCommand(0) {}
             Me._commandCollection(0) = New Global.System.Data.SqlClient.SqlCommand()
             Me._commandCollection(0).Connection = Me.Connection
-            Me._commandCollection(0).CommandText = "SELECT idPersona, idElecciones FROM dbo.Votos"
+            Me._commandCollection(0).CommandText = "SELECT idPersona, idElecciones, idPartido FROM dbo.Votos"
             Me._commandCollection(0).CommandType = Global.System.Data.CommandType.Text
         End Sub
         
@@ -7152,18 +7209,34 @@ Namespace DSEleccionesTableAdapters
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
          Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Delete, true)>  _
+        Public Overloads Overridable Function Delete(ByVal Original_idPersona As Integer, ByVal Original_idElecciones As Integer, ByVal Original_idPartido As Integer) As Integer
+            Me.Adapter.DeleteCommand.Parameters(0).Value = CType(Original_idPersona,Integer)
+            Me.Adapter.DeleteCommand.Parameters(1).Value = CType(Original_idElecciones,Integer)
+            Me.Adapter.DeleteCommand.Parameters(2).Value = CType(Original_idPartido,Integer)
+            Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.DeleteCommand.Connection.State
+            If ((Me.Adapter.DeleteCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
+                        <> Global.System.Data.ConnectionState.Open) Then
+                Me.Adapter.DeleteCommand.Connection.Open
+            End If
+            Try 
+                Dim returnValue As Integer = Me.Adapter.DeleteCommand.ExecuteNonQuery
+                Return returnValue
+            Finally
+                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
+                    Me.Adapter.DeleteCommand.Connection.Close
+                End If
+            End Try
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
          Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Insert, true)>  _
-        Public Overloads Overridable Function Insert(ByVal idPersona As Global.System.Nullable(Of Integer), ByVal idElecciones As Global.System.Nullable(Of Integer)) As Integer
-            If (idPersona.HasValue = true) Then
-                Me.Adapter.InsertCommand.Parameters(0).Value = CType(idPersona.Value,Integer)
-            Else
-                Me.Adapter.InsertCommand.Parameters(0).Value = Global.System.DBNull.Value
-            End If
-            If (idElecciones.HasValue = true) Then
-                Me.Adapter.InsertCommand.Parameters(1).Value = CType(idElecciones.Value,Integer)
-            Else
-                Me.Adapter.InsertCommand.Parameters(1).Value = Global.System.DBNull.Value
-            End If
+        Public Overloads Overridable Function Insert(ByVal idPersona As Integer, ByVal idElecciones As Integer, ByVal idPartido As Integer) As Integer
+            Me.Adapter.InsertCommand.Parameters(0).Value = CType(idPersona,Integer)
+            Me.Adapter.InsertCommand.Parameters(1).Value = CType(idElecciones,Integer)
+            Me.Adapter.InsertCommand.Parameters(2).Value = CType(idPartido,Integer)
             Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.InsertCommand.Connection.State
             If ((Me.Adapter.InsertCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
                         <> Global.System.Data.ConnectionState.Open) Then
@@ -7177,6 +7250,40 @@ Namespace DSEleccionesTableAdapters
                     Me.Adapter.InsertCommand.Connection.Close
                 End If
             End Try
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Update, true)>  _
+        Public Overloads Overridable Function Update(ByVal idPersona As Integer, ByVal idElecciones As Integer, ByVal idPartido As Integer, ByVal Original_idPersona As Integer, ByVal Original_idElecciones As Integer, ByVal Original_idPartido As Integer) As Integer
+            Me.Adapter.UpdateCommand.Parameters(0).Value = CType(idPersona,Integer)
+            Me.Adapter.UpdateCommand.Parameters(1).Value = CType(idElecciones,Integer)
+            Me.Adapter.UpdateCommand.Parameters(2).Value = CType(idPartido,Integer)
+            Me.Adapter.UpdateCommand.Parameters(3).Value = CType(Original_idPersona,Integer)
+            Me.Adapter.UpdateCommand.Parameters(4).Value = CType(Original_idElecciones,Integer)
+            Me.Adapter.UpdateCommand.Parameters(5).Value = CType(Original_idPartido,Integer)
+            Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.UpdateCommand.Connection.State
+            If ((Me.Adapter.UpdateCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
+                        <> Global.System.Data.ConnectionState.Open) Then
+                Me.Adapter.UpdateCommand.Connection.Open
+            End If
+            Try 
+                Dim returnValue As Integer = Me.Adapter.UpdateCommand.ExecuteNonQuery
+                Return returnValue
+            Finally
+                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
+                    Me.Adapter.UpdateCommand.Connection.Close
+                End If
+            End Try
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Update, true)>  _
+        Public Overloads Overridable Function Update(ByVal Original_idPersona As Integer, ByVal Original_idElecciones As Integer, ByVal Original_idPartido As Integer) As Integer
+            Return Me.Update(Original_idPersona, Original_idElecciones, Original_idPartido, Original_idPersona, Original_idElecciones, Original_idPartido)
         End Function
     End Class
     

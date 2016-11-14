@@ -2,7 +2,6 @@
 
 Public Class Voto : Implements IEquatable(Of Voto)
     Public Property idPersona As Integer
-    Public Property idLocalidad As Integer
     Public Property idElecciones As Integer
     Public Property idPartido As Integer
 

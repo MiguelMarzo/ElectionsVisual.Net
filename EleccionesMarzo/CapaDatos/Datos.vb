@@ -70,11 +70,19 @@ Public Class Datos
         Return provincias.ToList
     End Function
 
+    Public Function DevolverLocalidades() As List(Of Localidad)
+        Dim localidades = From drLocalidades In dsElecciones.Localidad
+                          Order By drLocalidades.nombre Descending
+                          Select New Localidad(drLocalidades.idLocalidad, drLocalidades.nombre, drLocalidades.idProvincia)
+
+        Return localidades.ToList
+    End Function
+
     Public Function LocalidadesPorProvincia(nombreProvincia As String) As List(Of Localidad)
         Dim localidades = From drp In dsElecciones.Localidad
                           Where drp.ProvinciaRow.nombre = nombreProvincia
                           Order By drp.nombre Descending
-                          Select New Localidad(drp.idLocalidad, drp.nombre, drp.idProvincia, 0)
+                          Select New Localidad(drp.idLocalidad, drp.nombre, drp.idProvincia)
 
         Return localidades.ToList
     End Function
@@ -83,7 +91,7 @@ Public Class Datos
         Dim localidades = From drp In dsElecciones.Localidad
                           Where drp.nombre.ToUpper.StartsWith(nombre.Trim.ToUpper)
                           Order By drp.nombre Descending
-                          Select New Localidad(drp.idLocalidad, drp.nombre, 0, drp.idProvincia)
+                          Select New Localidad(drp.idLocalidad, drp.nombre, drp.idProvincia)
 
         Return localidades.ToList
     End Function
@@ -113,7 +121,7 @@ Public Class Datos
         Return personas.ToList
     End Function
 
-    Private Function puedeVotar(fechaNac As Date, fechaElecciones As Date) As Boolean
+    Private Function PuedeVotar(fechaNac As Date, fechaElecciones As Date) As Boolean
         Dim años = fechaElecciones.Year - fechaNac.Year
         Dim mes = fechaElecciones.Month - fechaNac.Month
         Dim day = fechaElecciones.Day - fechaNac.Day
@@ -130,4 +138,28 @@ Public Class Datos
             Return False
         End If
     End Function
+
+    Public Function Votar(ByVal idPersona As Integer, ByVal idElecciones As Integer, ByVal idPartido As Integer) As Boolean
+        Try
+            Dim voto As DataRow = dsElecciones.Votos.NewRow()
+            voto("idPersona") = idPersona
+            voto("idElecciones") = idElecciones
+            voto("idPartido") = idPartido
+            dsElecciones.Votos.AddVotosRow(voto)
+            Return True
+        Catch ex As Exception
+            Return False
+        End Try
+    End Function
+
+    Public Function DevolverPartidos() As List(Of Partido)
+        Dim partidos = From drPartidos In dsElecciones.Partidos
+                       Order By drPartidos.nombre Descending
+                       Select New Partido(drPartidos.idPartido, drPartidos.nombre)
+
+        Return partidos.ToList
+
+    End Function
+
+
 End Class

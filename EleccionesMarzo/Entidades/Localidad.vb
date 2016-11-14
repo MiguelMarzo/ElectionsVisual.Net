@@ -8,11 +8,11 @@ Public Class Localidad : Implements IEquatable(Of Localidad)
     Public Sub New()
 
     End Sub
-    Public Sub New(id As String, nombre As String, numHabitantes As Integer, idProvincia As String)
+    Public Sub New(id As String, nombre As String, idProvincia As String)
         Me.Id = id
         Me.IdProvincia = idProvincia
         Me.nombre = nombre
-        Me.NumHabitantes = numHabitantes
+        Me.NumHabitantes = 0
     End Sub
 
     Public Overloads Function Equals(other As Localidad) As Boolean Implements IEquatable(Of Localidad).Equals

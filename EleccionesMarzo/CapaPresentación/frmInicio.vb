@@ -1,6 +1,6 @@
 ﻿Imports CapaNegocio
 Imports Entidades
-Public Class Form1
+Public Class frmInicio
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         For Each comunidad In _negocio.DevolverComunidades
             cmbComunidad.Items.Add(comunidad.Nombre)
