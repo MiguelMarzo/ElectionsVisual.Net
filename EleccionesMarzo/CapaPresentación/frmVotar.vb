@@ -25,7 +25,7 @@ Public Class frmVotar
             Exit Sub
         Else
             'TODO DNI-ID
-            Dim exito As Boolean = _negocio.Votar()
+            Dim exito As Boolean = _negocio.Votar(txtDni.Text, )
         End If
     End Sub
 End Class

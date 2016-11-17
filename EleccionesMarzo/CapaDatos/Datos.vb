@@ -61,9 +61,9 @@ Public Class Datos
         Return provincias.ToList
     End Function
 
-    Public Function ProvinciasPorComunidad(nombreComunidad As String) As List(Of Provincia)
+    Public Function ProvinciasPorComunidad(comunidad As Comunidad) As List(Of Provincia)
         Dim provincias = From drp In dsElecciones.Provincia
-                         Where drp.ComunidadRow.nombre = nombreComunidad
+                         Where drp.idComunidad = comunidad.Id
                          Order By drp.nombre Descending
                          Select New Provincia(drp.idProvincia, drp.nombre, drp.idComunidad)
 
@@ -78,9 +78,9 @@ Public Class Datos
         Return localidades.ToList
     End Function
 
-    Public Function LocalidadesPorProvincia(nombreProvincia As String) As List(Of Localidad)
+    Public Function LocalidadesPorProvincia(provincia As Provincia) As List(Of Localidad)
         Dim localidades = From drp In dsElecciones.Localidad
-                          Where drp.ProvinciaRow.nombre = nombreProvincia
+                          Where drp.idProvincia = provincia.Id
                           Order By drp.nombre Descending
                           Select New Localidad(drp.idLocalidad, drp.nombre, drp.idProvincia)
 
@@ -112,7 +112,6 @@ Public Class Datos
         If Not IsNothing(daPersona) Then
             daPersona.FillBy(dsElecciones.Persona, idLocalidad)
         End If
-        'DateDiff(DateInterval.Day, drp.fechaNac, fechaElecciones) >= edadMinima
         Dim personas = From drp In dsElecciones.Persona
                        Where drp.idLocalidad = idLocalidad AndAlso puedeVotar(drp.fechaNac, fechaElecciones)
                        Order By drp.nombre

@@ -23,12 +23,12 @@ Public Class Negocio
         Return _datos.DevolverProvincias
     End Function
 
-    Public Function ProvinciasPorComunidad(nombreComunidad As String) As List(Of Provincia)
-        Return _datos.ProvinciasPorComunidad(nombreComunidad)
+    Public Function ProvinciasPorComunidad(comunidad As Comunidad) As List(Of Provincia)
+        Return _datos.ProvinciasPorComunidad(comunidad)
     End Function
 
-    Public Function LocalidadesPorProvincia(nombreProvincia As String) As List(Of Localidad)
-        Return _datos.LocalidadesPorProvincia(nombreProvincia)
+    Public Function LocalidadesPorProvincia(provincia As Provincia) As List(Of Localidad)
+        Return _datos.LocalidadesPorProvincia(provincia)
     End Function
 
     Public Function LocalidadesPorNombre(nombre As String) As List(Of Localidad)

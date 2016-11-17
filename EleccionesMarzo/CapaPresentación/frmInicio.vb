@@ -3,7 +3,8 @@ Imports Entidades
 Public Class frmInicio
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         For Each comunidad In _negocio.DevolverComunidades
-            cmbComunidad.Items.Add(comunidad.Nombre)
+            cmbComunidad.Items.Add(comunidad)
+            cmbComunidad.DisplayMember = "nombre"
         Next
         cmbProvincia.Enabled = False
         cmbLocalidades.Enabled = False
@@ -21,29 +22,31 @@ Public Class frmInicio
 
     Private Sub cmbComunidad_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbComunidad.SelectedIndexChanged
         cmbProvincia.Items.Clear()
-        For Each provincia In _negocio.ProvinciasPorComunidad(cmbComunidad.SelectedItem.ToString)
-            cmbProvincia.Items.Add(provincia.Nombre)
+        Dim com As Comunidad = cmbComunidad.SelectedItem
+        For Each provincia In _negocio.ProvinciasPorComunidad(com)
+            cmbProvincia.Items.Add(provincia)
+            cmbProvincia.DisplayMember = "nombre"
         Next
         cmbProvincia.Enabled = True
     End Sub
 
     Private Sub cmbProvincia_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbProvincia.SelectedIndexChanged
-        dgvConsultas.DataSource = _negocio.LocalidadesPorProvincia(cmbProvincia.SelectedItem.ToString)
+        Dim prov As Provincia = cmbProvincia.SelectedItem
+        Dim localidades As New List(Of Localidad)
+        localidades = _negocio.LocalidadesPorProvincia(prov)
+        dgvConsultas.DataSource = localidades
         cmbLocalidades.Items.Clear()
-        For Each localidad In _negocio.LocalidadesPorProvincia(cmbProvincia.SelectedItem.ToString)
-            cmbLocalidades.Items.Add(localidad.nombre.ToString.Trim)
+        For Each localidad In _negocio.LocalidadesPorProvincia(prov)
+            cmbLocalidades.Items.Add(localidad)
+            cmbLocalidades.DisplayMember = "nombre"
         Next
         cmbLocalidades.Enabled = True
     End Sub
 
     Private Sub cmbLocalidades_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbLocalidades.SelectedIndexChanged
         Dim votantes As New List(Of Persona)
-        For Each localidades In _negocio.LocalidadesPorProvincia(cmbProvincia.SelectedItem)
-            If localidades.nombre.Trim = cmbLocalidades.SelectedItem.ToString.Trim Then
-                dgvConsultas.DataSource = _negocio.PersonasQuePuedenVotarEnUnaFecha(localidades.Id, Today)
-            End If
-        Next
-
+        Dim loc As Localidad = cmbLocalidades.SelectedItem
+        dgvConsultas.DataSource = _negocio.PersonasQuePuedenVotarEnUnaFecha(loc.Id, Today)
     End Sub
 
     Private Sub btnVotar_Click(sender As Object, e As EventArgs) Handles btnVotar.Click
