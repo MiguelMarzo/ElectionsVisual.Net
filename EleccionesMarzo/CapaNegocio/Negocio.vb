@@ -45,4 +45,10 @@ Public Class Negocio
     Public Function Votar(ByVal idPersona As Integer, ByVal idElecciones As Integer, ByVal idPartido As Integer)
         Return _datos.Votar(idPersona, idElecciones, idPartido)
     End Function
+    Public Function eleccionesDeHoy() As List(Of Elecciones)
+        Return _datos.eleccionesDeHoy()
+    End Function
+    Public Function devolverIdDePersonaPorDNI(dni As String) As String
+        Return _datos.devolverPersonaPorDNI(dni)
+    End Function
 End Class

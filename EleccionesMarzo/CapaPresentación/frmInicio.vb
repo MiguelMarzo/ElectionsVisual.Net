@@ -27,6 +27,7 @@ Public Class frmInicio
             cmbProvincia.Items.Add(provincia)
             cmbProvincia.DisplayMember = "nombre"
         Next
+        cmbProvincia.SelectedIndex = 0
         cmbProvincia.Enabled = True
     End Sub
 
@@ -40,6 +41,7 @@ Public Class frmInicio
             cmbLocalidades.Items.Add(localidad)
             cmbLocalidades.DisplayMember = "nombre"
         Next
+        cmbLocalidades.SelectedIndex = 0
         cmbLocalidades.Enabled = True
     End Sub
 

@@ -41,7 +41,7 @@ Public Class Datos
             daPartidosPorLocalidadesYElecciones.Fill(dsElecciones.PartidosPorLocalidad)
 
         Catch ex As Exception
-            MsgBox("error")
+            Throw ex
         End Try
     End Sub
 
@@ -160,5 +160,21 @@ Public Class Datos
 
     End Function
 
+    Public Function eleccionesDeHoy() As List(Of Elecciones)
+        Dim elecciones = From drElecciones In dsElecciones.Elecciones
+                         Order By drElecciones.tipo Ascending
+                         Where drElecciones.fecha = Today
+                         Select New Elecciones(drElecciones.idElecciones, drElecciones.fecha, drElecciones.tipo)
+
+        Return elecciones.ToList
+    End Function
+
+    Public Function devolverIdDePersonaPorDNI(dni As String) As String
+        Dim personaId = From drPersonas In dsElecciones.Persona
+                        Where drPersonas.dni = dni
+                        Select drPersonas.idPersona
+
+        Return personaId.ToString
+    End Function
 
 End Class
