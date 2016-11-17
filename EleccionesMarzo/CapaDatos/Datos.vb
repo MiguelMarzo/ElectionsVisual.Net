@@ -139,13 +139,18 @@ Public Class Datos
     End Function
 
     Public Function Votar(ByVal idPersona As Integer, ByVal idElecciones As Integer, ByVal idPartido As Integer) As Boolean
+        Dim dtVotos As New DataTable
+        dtVotos = dsElecciones.Votos
+
+        Dim voto As DataRow = dtVotos.NewRow
+        voto("idPersona") = idPersona
+        voto("idElecciones") = idElecciones
+        voto("idPartido") = idPartido
+        dtVotos.Rows.Add(voto)
+        dsElecciones.AcceptChanges()
+
+        Return True
         Try
-            Dim voto As DataRow = dsElecciones.Votos.NewRow()
-            voto("idPersona") = idPersona
-            voto("idElecciones") = idElecciones
-            voto("idPartido") = idPartido
-            dsElecciones.Votos.AddVotosRow(voto)
-            Return True
         Catch ex As Exception
             Return False
         End Try
@@ -169,12 +174,13 @@ Public Class Datos
         Return elecciones.ToList
     End Function
 
-    Public Function devolverIdDePersonaPorDNI(dni As String) As String
-        Dim personaId = From drPersonas In dsElecciones.Persona
-                        Where drPersonas.dni = dni
-                        Select drPersonas.idPersona
+    Public Function devolverIdDePersonaPorDNI(dni As String) As List(Of Persona)
+        Dim per = From drPersonas In dsElecciones.Persona
+                  Where drPersonas.dni.Trim = dni.Trim
+                  Select New Persona(drPersonas.idLocalidad, drPersonas.dni, drPersonas.apellido1, drPersonas.apellido2, drPersonas.nombrePila,
+                      drPersonas.fechaNac, drPersonas.domicilio, drPersonas.codigoPostal, drPersonas.idLocalidad)
 
-        Return personaId.ToString
+        Return per.ToList
     End Function
 
 End Class

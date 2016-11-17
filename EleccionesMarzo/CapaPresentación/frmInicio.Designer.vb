@@ -104,9 +104,9 @@ Partial Class frmInicio
         '
         'btnCenso
         '
-        Me.btnCenso.Location = New System.Drawing.Point(407, 217)
+        Me.btnCenso.Location = New System.Drawing.Point(423, 296)
         Me.btnCenso.Name = "btnCenso"
-        Me.btnCenso.Size = New System.Drawing.Size(78, 42)
+        Me.btnCenso.Size = New System.Drawing.Size(100, 72)
         Me.btnCenso.TabIndex = 4
         Me.btnCenso.Text = "Consultar"
         Me.btnCenso.UseVisualStyleBackColor = True
@@ -236,7 +236,7 @@ Partial Class frmInicio
         Me.lblSeparador3.TabIndex = 19
         Me.lblSeparador3.Text = "_______________________________________________"
         '
-        'Form1
+        'frmInicio
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -262,7 +262,7 @@ Partial Class frmInicio
         Me.Controls.Add(Me.dgvConsultas)
         Me.Controls.Add(Me.btnBuscarLocalidad)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Name = "Form1"
+        Me.Name = "frmInicio"
         Me.Text = "Elecciones"
         CType(Me.dgvConsultas, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.DsElecciones1, System.ComponentModel.ISupportInitialize).EndInit()

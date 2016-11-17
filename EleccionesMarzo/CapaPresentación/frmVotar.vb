@@ -10,7 +10,6 @@ Public Class frmVotar
         txtDni.Enabled = False
         cmbPartidos.Enabled = False
         btnVotar.Enabled = False
-        lblElecciones.Enabled = False
         cmbElecciones.Enabled = False
         For Each eleccion In _negocio.eleccionesDeHoy
             cmbElecciones.Items.Add(eleccion)
@@ -40,21 +39,23 @@ Public Class frmVotar
         cmbElecciones.Enabled = True
     End Sub
     Private Sub btnVotar_Click(sender As Object, e As EventArgs) Handles btnVotar.Click
-        If cmbElecciones.SelectedItem = Nothing Or cmbPartidos.SelectedItem = Nothing Or lblDni.Text = Nothing Then
+        If cmbElecciones.SelectedItem Is Nothing Or cmbPartidos.SelectedItem Is Nothing Or lblDni.Text = Nothing Then
             MessageBox.Show("Error, introduce localidad, dni y partido al que votar")
             Exit Sub
         Else
-            Dim idPersona As String
+            'Dim per As Persona
+
+            'per = _negocio.devolverIdDePersonaPorDNI(txtDni.Text)
             Try
-                idPersona = _negocio.devolverIdDePersonaPorDNI(txtDni.Text)
             Catch ex As Exception
                 MessageBox.Show("DNI no encontrado")
                 Exit Sub
             End Try
             Dim eleccion As Elecciones = cmbElecciones.SelectedItem
             Dim partido As Partido = cmbPartidos.SelectedItem
+
+            Dim exito As Boolean = _negocio.Votar(1, eleccion.id, partido.id)
             Try
-                Dim exito As Boolean = _negocio.Votar(idPersona, eleccion.id, partido.id)
             Catch ex As Exception
                 MessageBox.Show("Error al votar")
             End Try
