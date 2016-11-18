@@ -2,7 +2,8 @@
 Public Class Datos
 
     Private dsElecciones As DSElecciones
-    Dim daPersona As New DSEleccionesTableAdapters.PersonaTableAdapter
+    Private daVotos As New DSEleccionesTableAdapters.VotosTableAdapter
+    Private daPersona As New DSEleccionesTableAdapters.PersonaTableAdapter
     Public Sub iki()
         Dim cadCon As String = My.Settings.EleccionesMarzoConnectionString
     End Sub
@@ -33,7 +34,7 @@ Public Class Datos
             daPartidos.Fill(dsElecciones.Partidos)
 
             'Adaptador para Votos
-            Dim daVotos As New DSEleccionesTableAdapters.VotosTableAdapter
+
             daVotos.Fill(dsElecciones.Votos)
 
             'Adaptador para PartidosPorLocalidades
@@ -138,22 +139,39 @@ Public Class Datos
         End If
     End Function
 
-    Public Function Votar(ByVal idPersona As Integer, ByVal idElecciones As Integer, ByVal idPartido As Integer) As Boolean
-        Dim dtVotos As New DataTable
-        dtVotos = dsElecciones.Votos
+    Public Function Votar(ByVal idPersona As Integer, ByVal idElecciones As Integer) As Boolean
+        Dim per = From drPer In dsElecciones.Persona
+                  Where drPer.idPersona = idPersona
+                  Select New Persona()
 
-        Dim voto As DataRow = dtVotos.NewRow
-        voto("idPersona") = idPersona
-        voto("idElecciones") = idElecciones
-        voto("idPartido") = idPartido
-        dtVotos.Rows.Add(voto)
-        dsElecciones.AcceptChanges()
+        If (per.ToList.Count = 0) Then
 
-        Return True
-        Try
-        Catch ex As Exception
+        End If
+        Dim votos = From drVotos In dsElecciones.Votos
+                    Where drVotos.idPersona = idPersona
+                    Select New Voto(drVotos.idPersona, drVotos.idElecciones)
+
+        If (votos.ToList.Count <> 0) Then
             Return False
-        End Try
+        Else
+
+
+            Dim dtVotos As DataTable
+            dtVotos = dsElecciones.Votos
+
+            Dim drVoto As DataRow = dtVotos.NewRow
+            drVoto("idPersona") = idPersona
+            drVoto("idElecciones") = idElecciones
+            dtVotos.Rows.Add(drVoto)
+            daVotos.Update(drVoto)
+            dsElecciones.AcceptChanges()
+            Return True
+        End If
+        'Try
+
+        'Catch ex As Exception
+        '    Return False
+        'End Try
     End Function
 
     Public Function DevolverPartidos() As List(Of Partido)
@@ -182,5 +200,7 @@ Public Class Datos
 
         Return per.ToList
     End Function
+
+
 
 End Class

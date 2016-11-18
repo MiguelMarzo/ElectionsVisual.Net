@@ -46,20 +46,25 @@ Public Class frmVotar
             'Dim per As Persona
 
             'per = _negocio.devolverIdDePersonaPorDNI(txtDni.Text)
-            Try
-            Catch ex As Exception
-                MessageBox.Show("DNI no encontrado")
-                Exit Sub
-            End Try
+            'Try
+            'Catch ex As Exception
+            '    MessageBox.Show("DNI no encontrado")
+            '    Exit Sub
+            'End Try
             Dim eleccion As Elecciones = cmbElecciones.SelectedItem
+
+            Dim exito As Boolean = _negocio.Votar(1, eleccion.id)
+            MessageBox.Show(exito)
+            'Try
+            'Catch ex As Exception
+            '    MessageBox.Show("Error al votar")
+            'End Try
+
+
+
+
+
             Dim partido As Partido = cmbPartidos.SelectedItem
-
-            Dim exito As Boolean = _negocio.Votar(1, eleccion.id, partido.id)
-            Try
-            Catch ex As Exception
-                MessageBox.Show("Error al votar")
-            End Try
-
         End If
     End Sub
 End Class
