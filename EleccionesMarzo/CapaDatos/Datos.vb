@@ -46,6 +46,7 @@ Public Class Datos
         End Try
     End Sub
 
+    'Función para obtener todas las Comunidades
     Public Function DevolverComunidades() As List(Of Comunidad)
         Dim comunidades = From dr In dsElecciones.Comunidad
                           Order By dr.nombre Descending
@@ -54,6 +55,7 @@ Public Class Datos
         Return comunidades.ToList
     End Function
 
+    'Función para obtener todas las Provincias
     Public Function DevolverProvincias() As List(Of Provincia)
         Dim provincias = From dr In dsElecciones.Provincia
                          Order By dr.nombre Descending
@@ -62,6 +64,26 @@ Public Class Datos
         Return provincias.ToList
     End Function
 
+    'Función para obtener todas las Localidades
+    Public Function DevolverLocalidades() As List(Of Localidad)
+        Dim localidades = From drLocalidades In dsElecciones.Localidad
+                          Order By drLocalidades.nombre Descending
+                          Select New Localidad(drLocalidades.idLocalidad, drLocalidades.nombre, drLocalidades.idProvincia)
+
+        Return localidades.ToList
+    End Function
+
+    'Función para obtener todos los Partidos
+    Public Function DevolverPartidos() As List(Of Partido)
+        Dim partidos = From drPartidos In dsElecciones.Partidos
+                       Order By drPartidos.nombre Descending
+                       Select New Partido(drPartidos.idPartido, drPartidos.nombre)
+
+        Return partidos.ToList
+
+    End Function
+
+    'Función para obtener las Provincias que pertenecen a una Comunidad
     Public Function ProvinciasPorComunidad(comunidad As Comunidad) As List(Of Provincia)
         Dim provincias = From drp In dsElecciones.Provincia
                          Where drp.idComunidad = comunidad.Id
@@ -71,14 +93,7 @@ Public Class Datos
         Return provincias.ToList
     End Function
 
-    Public Function DevolverLocalidades() As List(Of Localidad)
-        Dim localidades = From drLocalidades In dsElecciones.Localidad
-                          Order By drLocalidades.nombre Descending
-                          Select New Localidad(drLocalidades.idLocalidad, drLocalidades.nombre, drLocalidades.idProvincia)
-
-        Return localidades.ToList
-    End Function
-
+    'Función para obtener todas las Localidades de una Provincia
     Public Function LocalidadesPorProvincia(provincia As Provincia) As List(Of Localidad)
         Dim localidades = From drp In dsElecciones.Localidad
                           Where drp.idProvincia = provincia.Id
@@ -88,6 +103,7 @@ Public Class Datos
         Return localidades.ToList
     End Function
 
+    'Función que busca y devuelve las Localidades cuyo nombre empieze o sea el proporcionado
     Public Function LocalidadesPorNombre(nombre As String) As List(Of Localidad)
         Dim localidades = From drp In dsElecciones.Localidad
                           Where drp.nombre.ToUpper.StartsWith(nombre.Trim.ToUpper)
@@ -97,6 +113,7 @@ Public Class Datos
         Return localidades.ToList
     End Function
 
+    'Función que devuelve las Personas residentes en una Localidad independientemente de si pueden votar o no
     Public Function PersonasPorLocalidad(idLocalidad As String) As List(Of Persona)
         If dsElecciones.Persona.Rows.Count = 0 OrElse TryCast(dsElecciones.Persona.Rows(0), DSElecciones.PersonaRow).idLocalidad <> idLocalidad Then
             daPersona.FillByIdLocalidad(dsElecciones.Persona, idLocalidad)
@@ -109,6 +126,7 @@ Public Class Datos
         Return personas.ToList
     End Function
 
+    'Función que devuelve las Personas de una Localidad concreta que pueden Votar en una Fecha específica con una EdadMinima índicada
     Public Function PersonasQuePuedenVotarEnUnaFecha(idLocalidad As String, fechaElecciones As Date, edadMinima As Long) As List(Of Persona)
         If dsElecciones.Persona.Rows.Count = 0 OrElse TryCast(dsElecciones.Persona.Rows(0), DSElecciones.PersonaRow).idLocalidad <> idLocalidad Then
             daPersona.FillByIdLocalidad(dsElecciones.Persona, idLocalidad)
@@ -121,6 +139,7 @@ Public Class Datos
         Return personas.ToList
     End Function
 
+    'Función que comprueba si una Persona puede Votar en una Fecha comparandola con la Fecha de nacimiento de esa Persona
     Private Function PuedeVotar(fechaNac As Date, fechaElecciones As Date) As Boolean
         Dim años = fechaElecciones.Year - fechaNac.Year
         Dim mes = fechaElecciones.Month - fechaNac.Month
@@ -139,17 +158,20 @@ Public Class Datos
         End If
     End Function
 
+    'Función que ejecuta una instrucción de Insert en el DataSet y luego en la BD, en la tabla Voto
     Public Function Votar(ByVal per As Persona, ByVal eleccion As Elecciones, ByVal localidad As Localidad) As Boolean
+        'Primero comprueba si esa persona, de esa localidad puede votar, es  decir, si es mayor de 18 años
+        'Devolvería False si no fuese así o si la persona no perteneciese a la Localidad dada
         Try
             If PersonasQuePuedenVotarEnUnaFecha(localidad.Id, eleccion.fecha, 18).Contains(per) Then
                 Dim votos = From drVotos In dsElecciones.Votos
-                            Where drVotos.PersonaRow.dni = per.dni
+                            Where drVotos.PersonaRow.dni = per.dni AndAlso drVotos.idElecciones = eleccion.id
                             Select New Voto(drVotos.idPersona, drVotos.idElecciones)
-
+                'Si la Persona puede votar en esa Localidad se comprueba si ya ha votado en estas Elecciones concretas antes
                 If (votos.ToList.Count <> 0) Then
                     Return False
                 Else
-
+                    'Si todo está correcto, se realiza la actualización en el DataSet
                     Dim dtVotos As DataTable
                     dtVotos = dsElecciones.Votos
 
@@ -157,6 +179,7 @@ Public Class Datos
                     drVoto("idPersona") = per.Id
                     drVoto("idElecciones") = eleccion.id
                     dtVotos.Rows.Add(drVoto)
+                    'Y por último se da la orden de Update y AcceptChanges para trasladar los cambios sufridos por el DataSet a la BD
                     daVotos.Update(drVoto)
                     dsElecciones.AcceptChanges()
                     Return True
@@ -167,15 +190,7 @@ Public Class Datos
         End Try
     End Function
 
-    Public Function DevolverPartidos() As List(Of Partido)
-        Dim partidos = From drPartidos In dsElecciones.Partidos
-                       Order By drPartidos.nombre Descending
-                       Select New Partido(drPartidos.idPartido, drPartidos.nombre)
-
-        Return partidos.ToList
-
-    End Function
-
+    'Función para obetener aquellas Elecciones que se celebren en el dia de Hoy
     Public Function eleccionesDeHoy() As List(Of Elecciones)
         Dim elecciones = From drElecciones In dsElecciones.Elecciones
                          Order By drElecciones.tipo Ascending
@@ -185,6 +200,8 @@ Public Class Datos
         Return elecciones.ToList
     End Function
 
+    'Función para obtener el objecto Persona cuyo DNI es dado como parámetro
+    'El parámetro localidad solo es para poder hacer el FillByIdLocalidad
     Public Function devolverPersonaPorDNI(dni As String, localidad As Localidad) As List(Of Persona)
         If dsElecciones.Persona.Rows.Count = 0 OrElse TryCast(dsElecciones.Persona.Rows(0), DSElecciones.PersonaRow).idLocalidad <> localidad.Id Then
             daPersona.FillByIdLocalidad(dsElecciones.Persona, localidad.Id)
@@ -196,7 +213,4 @@ Public Class Datos
 
         Return per.ToList
     End Function
-
-
-
 End Class

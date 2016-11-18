@@ -33,6 +33,14 @@ Public Class frmVotar
     End Sub
 
     Private Sub cmbLocalidades_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbLocalidades.SelectedIndexChanged
+        'Comprueba que hoy haya alguna eleccion posible para votar, de lo contrario, avisará
+        If cmbElecciones.Items.Count > 0 Then
+            cmbElecciones.SelectedIndex = 0
+        Else
+            MessageBox.Show("No hay elecciones hoy... Pista: añade una en la db º_º")
+            Exit Sub
+        End If
+        'Abilita los controles inferiores del formulario para proceder al voto
         txtDni.Enabled = True
         cmbPartidos.Enabled = True
         btnVotar.Enabled = True
@@ -49,8 +57,6 @@ Public Class frmVotar
             'En caso de que si que se hayan proporcionado los datos se comprueba si existe una persona con ese DNI
             'De no ser así avisará con un msgBox y cancelará el voto
             Dim per As Persona
-
-
             Try
                 per = _negocio.devolverPersonaPorDNI(txtDni.Text, cmbLocalidades.SelectedItem)
             Catch ex As Exception
