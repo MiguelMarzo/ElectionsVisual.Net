@@ -139,39 +139,32 @@ Public Class Datos
         End If
     End Function
 
-    Public Function Votar(ByVal idPersona As Integer, ByVal idElecciones As Integer) As Boolean
-        Dim per = From drPer In dsElecciones.Persona
-                  Where drPer.idPersona = idPersona
-                  Select New Persona()
+    Public Function Votar(ByVal per As Persona, ByVal eleccion As Elecciones, ByVal localidad As Localidad) As Boolean
+        Try
+            If PersonasQuePuedenVotarEnUnaFecha(localidad.Id, eleccion.fecha, 18).Contains(per) Then
+                Dim votos = From drVotos In dsElecciones.Votos
+                            Where drVotos.PersonaRow.dni = per.dni
+                            Select New Voto(drVotos.idPersona, drVotos.idElecciones)
 
-        If (per.ToList.Count = 0) Then
+                If (votos.ToList.Count <> 0) Then
+                    Return False
+                Else
 
-        End If
-        Dim votos = From drVotos In dsElecciones.Votos
-                    Where drVotos.idPersona = idPersona
-                    Select New Voto(drVotos.idPersona, drVotos.idElecciones)
+                    Dim dtVotos As DataTable
+                    dtVotos = dsElecciones.Votos
 
-        If (votos.ToList.Count <> 0) Then
+                    Dim drVoto As DataRow = dtVotos.NewRow
+                    drVoto("idPersona") = per.Id
+                    drVoto("idElecciones") = eleccion.id
+                    dtVotos.Rows.Add(drVoto)
+                    daVotos.Update(drVoto)
+                    dsElecciones.AcceptChanges()
+                    Return True
+                End If
+            End If
+        Catch ex As Exception
             Return False
-        Else
-
-
-            Dim dtVotos As DataTable
-            dtVotos = dsElecciones.Votos
-
-            Dim drVoto As DataRow = dtVotos.NewRow
-            drVoto("idPersona") = idPersona
-            drVoto("idElecciones") = idElecciones
-            dtVotos.Rows.Add(drVoto)
-            daVotos.Update(drVoto)
-            dsElecciones.AcceptChanges()
-            Return True
-        End If
-        'Try
-
-        'Catch ex As Exception
-        '    Return False
-        'End Try
+        End Try
     End Function
 
     Public Function DevolverPartidos() As List(Of Partido)
@@ -192,7 +185,8 @@ Public Class Datos
         Return elecciones.ToList
     End Function
 
-    Public Function devolverIdDePersonaPorDNI(dni As String) As List(Of Persona)
+    Public Function devolverPersonaPorDNI(dni As String) As List(Of Persona)
+        daPersona.Fill(dsElecciones.Persona)
         Dim per = From drPersonas In dsElecciones.Persona
                   Where drPersonas.dni.Trim = dni.Trim
                   Select New Persona(drPersonas.idLocalidad, drPersonas.dni, drPersonas.apellido1, drPersonas.apellido2, drPersonas.nombrePila,

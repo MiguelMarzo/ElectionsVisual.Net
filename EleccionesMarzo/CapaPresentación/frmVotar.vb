@@ -25,7 +25,8 @@ Public Class frmVotar
         Else
             cmbLocalidades.Items.Clear()
             For Each localidad In localidadesEncontradas
-                cmbLocalidades.Items.Add(localidad.nombre)
+                cmbLocalidades.Items.Add(localidad)
+                cmbLocalidades.DisplayMember = "nombre"
             Next
             cmbLocalidades.SelectedIndex = 0
         End If
@@ -39,32 +40,31 @@ Public Class frmVotar
         cmbElecciones.Enabled = True
     End Sub
     Private Sub btnVotar_Click(sender As Object, e As EventArgs) Handles btnVotar.Click
+        'Comprueba si los campos necesarios para el voto han sido rellenados/seleccionados
+        'En este caso son "Elecciones", "Partidos" y "DNI"
         If cmbElecciones.SelectedItem Is Nothing Or cmbPartidos.SelectedItem Is Nothing Or lblDni.Text = Nothing Then
             MessageBox.Show("Error, introduce localidad, dni y partido al que votar")
             Exit Sub
         Else
-            'Dim per As Persona
+            'En caso de que si que se hayan proporcionado los datos se comprueba si existe una persona con ese DNI
+            'De no ser así avisará con un msgBox y cancelará el voto
+            Dim per As Persona
+            Try
+                per = _negocio.devolverPersonaPorDNI(txtDni.Text)
+            Catch ex As Exception
+                MessageBox.Show("DNI no encontrado")
+                Exit Sub
+            End Try
 
-            'per = _negocio.devolverIdDePersonaPorDNI(txtDni.Text)
-            'Try
-            'Catch ex As Exception
-            '    MessageBox.Show("DNI no encontrado")
-            '    Exit Sub
-            'End Try
-            Dim eleccion As Elecciones = cmbElecciones.SelectedItem
-
-            Dim exito As Boolean = _negocio.Votar(1, eleccion.id)
-            MessageBox.Show(exito)
-            'Try
-            'Catch ex As Exception
-            '    MessageBox.Show("Error al votar")
-            'End Try
-
-
-
-
-
-            Dim partido As Partido = cmbPartidos.SelectedItem
+            'Una vez conotrolado que esa persona exista se llama al método votar, el cual controla los demás fallos que
+            'puedan ocurrir durante su ejecución, si fallase, el catch recogería la excepción y avisaría de que el voto no
+            'se ha efectuado correctamente
+            Try
+                Dim exito As Boolean = _negocio.Votar(per, cmbElecciones.SelectedItem, cmbLocalidades.SelectedItem)
+                If exito = True Then MessageBox.Show("Voto realizado correctamente") Else MessageBox.Show("Error al votar")
+            Catch ex As Exception
+                MessageBox.Show("Error al votar")
+            End Try
         End If
     End Sub
 End Class

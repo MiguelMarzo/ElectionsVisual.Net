@@ -42,14 +42,14 @@ Public Class Negocio
     Public Function PersonasQuePuedenVotarEnUnaFecha(idLocalidad As String, fechaElecciones As Date) As List(Of Persona)
         Return _datos.PersonasQuePuedenVotarEnUnaFecha(idLocalidad, fechaElecciones, EDAD_MINIMA)
     End Function
-    Public Function Votar(ByVal idPersona As Integer, ByVal idElecciones As Integer)
-        Return _datos.Votar(idPersona, idElecciones)
+    Public Function Votar(ByVal per As Persona, ByVal elecciones As Elecciones, ByVal localidad As Localidad)
+        Return _datos.Votar(per, elecciones, localidad)
     End Function
     Public Function eleccionesDeHoy() As List(Of Elecciones)
         Return _datos.eleccionesDeHoy()
     End Function
-    Public Function devolverIdDePersonaPorDNI(dni As String) As Persona
-        Return _datos.devolverIdDePersonaPorDNI(dni)(0)
+    Public Function devolverPersonaPorDNI(dni As String) As Persona
+        Return _datos.devolverPersonaPorDNI(dni)(0)
     End Function
 
 
