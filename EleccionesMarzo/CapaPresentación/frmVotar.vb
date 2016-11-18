@@ -49,8 +49,10 @@ Public Class frmVotar
             'En caso de que si que se hayan proporcionado los datos se comprueba si existe una persona con ese DNI
             'De no ser así avisará con un msgBox y cancelará el voto
             Dim per As Persona
+
+
             Try
-                per = _negocio.devolverPersonaPorDNI(txtDni.Text)
+                per = _negocio.devolverPersonaPorDNI(txtDni.Text, cmbLocalidades.SelectedItem)
             Catch ex As Exception
                 MessageBox.Show("DNI no encontrado")
                 Exit Sub

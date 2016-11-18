@@ -98,8 +98,8 @@ Public Class Datos
     End Function
 
     Public Function PersonasPorLocalidad(idLocalidad As String) As List(Of Persona)
-        If Not IsNothing(daPersona) Then
-            daPersona.FillBy(dsElecciones.Persona, idLocalidad)
+        If dsElecciones.Persona.Rows.Count = 0 OrElse TryCast(dsElecciones.Persona.Rows(0), DSElecciones.PersonaRow).idLocalidad <> idLocalidad Then
+            daPersona.FillByIdLocalidad(dsElecciones.Persona, idLocalidad)
         End If
         Dim personas = From drp In dsElecciones.Persona
                        Where drp.idLocalidad = idLocalidad
@@ -110,8 +110,8 @@ Public Class Datos
     End Function
 
     Public Function PersonasQuePuedenVotarEnUnaFecha(idLocalidad As String, fechaElecciones As Date, edadMinima As Long) As List(Of Persona)
-        If Not IsNothing(daPersona) Then
-            daPersona.FillBy(dsElecciones.Persona, idLocalidad)
+        If dsElecciones.Persona.Rows.Count = 0 OrElse TryCast(dsElecciones.Persona.Rows(0), DSElecciones.PersonaRow).idLocalidad <> idLocalidad Then
+            daPersona.FillByIdLocalidad(dsElecciones.Persona, idLocalidad)
         End If
         Dim personas = From drp In dsElecciones.Persona
                        Where drp.idLocalidad = idLocalidad AndAlso puedeVotar(drp.fechaNac, fechaElecciones)
@@ -185,8 +185,10 @@ Public Class Datos
         Return elecciones.ToList
     End Function
 
-    Public Function devolverPersonaPorDNI(dni As String) As List(Of Persona)
-        daPersona.Fill(dsElecciones.Persona)
+    Public Function devolverPersonaPorDNI(dni As String, localidad As Localidad) As List(Of Persona)
+        If dsElecciones.Persona.Rows.Count = 0 OrElse TryCast(dsElecciones.Persona.Rows(0), DSElecciones.PersonaRow).idLocalidad <> localidad.Id Then
+            daPersona.FillByIdLocalidad(dsElecciones.Persona, localidad.Id)
+        End If
         Dim per = From drPersonas In dsElecciones.Persona
                   Where drPersonas.dni.Trim = dni.Trim
                   Select New Persona(drPersonas.idLocalidad, drPersonas.dni, drPersonas.apellido1, drPersonas.apellido2, drPersonas.nombrePila,

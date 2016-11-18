@@ -6171,7 +6171,7 @@ Namespace DSEleccionesTableAdapters
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
          Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
          Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Fill, false)>  _
-        Public Overloads Overridable Function FillBy(ByVal dataTable As DSElecciones.PersonaDataTable, ByVal IDLOCALIDAD As Global.System.Nullable(Of Integer)) As Integer
+        Public Overloads Overridable Function FillByIdLocalidad(ByVal dataTable As DSElecciones.PersonaDataTable, ByVal IDLOCALIDAD As Global.System.Nullable(Of Integer)) As Integer
             Me.Adapter.SelectCommand = Me.CommandCollection(1)
             If (IDLOCALIDAD.HasValue = true) Then
                 Me.Adapter.SelectCommand.Parameters(0).Value = CType(IDLOCALIDAD.Value,Integer)

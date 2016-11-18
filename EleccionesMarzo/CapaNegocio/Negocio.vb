@@ -48,8 +48,8 @@ Public Class Negocio
     Public Function eleccionesDeHoy() As List(Of Elecciones)
         Return _datos.eleccionesDeHoy()
     End Function
-    Public Function devolverPersonaPorDNI(dni As String) As Persona
-        Return _datos.devolverPersonaPorDNI(dni)(0)
+    Public Function devolverPersonaPorDNI(dni As String, localidad As Localidad) As Persona
+        Return _datos.devolverPersonaPorDNI(dni, localidad)(0)
     End Function
 
 
