@@ -132,7 +132,7 @@ Public Class Datos
             daPersona.FillByIdLocalidad(dsElecciones.Persona, idLocalidad)
         End If
         Dim personas = From drp In dsElecciones.Persona
-                       Where drp.idLocalidad = idLocalidad AndAlso puedeVotar(drp.fechaNac, fechaElecciones)
+                       Where drp.idLocalidad = idLocalidad AndAlso PuedeVotar(drp.fechaNac, fechaElecciones)
                        Order By drp.nombre
                        Select New Persona(drp.idPersona, drp.dni, drp.apellido1.Trim, drp.apellido2.Trim, drp.nombrePila.Trim, drp.fechaNac, drp.domicilio.Trim, drp.codigoPostal.Trim, drp.idLocalidad)
 
