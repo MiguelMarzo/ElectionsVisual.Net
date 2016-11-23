@@ -3,44 +3,46 @@ Imports Entidades
 Public Class frmVotar
 
     Private Sub frmVotar_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        For Each partido In _negocio.DevolverPartidos
-            cmbPartidos.Items.Add(partido)
-            cmbPartidos.DisplayMember = "nombre"
+        For Each comunidad In _negocio.DevolverComunidades
+            cmbComunidades.Items.Add(comunidad)
+            cmbComunidades.DisplayMember = "nombre"
         Next
         txtDni.Enabled = False
         cmbPartidos.Enabled = False
         btnVotar.Enabled = False
         cmbElecciones.Enabled = False
-        For Each eleccion In _negocio.eleccionesDeHoy
-            cmbElecciones.Items.Add(eleccion)
-            cmbElecciones.DisplayMember = "tipo"
+
+    End Sub
+    Private Sub cmbComunidades_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbComunidades.SelectedIndexChanged
+        For Each provincia In _negocio.ProvinciasPorComunidad(cmbComunidades.SelectedItem)
+            cmbProvincia.Items.Add(provincia)
+            cmbProvincia.DisplayMember = "nombre"
+        Next
+    End Sub
+    Private Sub cmbProvincia_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbProvincia.SelectedIndexChanged
+        For Each localidad In _negocio.LocalidadesPorProvincia(cmbProvincia.SelectedItem)
+            cmbLocalidades.Items.Add(localidad)
+            cmbLocalidades.DisplayMember = "nombre"
         Next
     End Sub
 
-    Private Sub btnBuscarLocalidad_Click(sender As Object, e As EventArgs) Handles btnBuscarLocalidad.Click
-
-        Dim localidadesEncontradas = _negocio.LocalidadesPorNombre(txtBoxBuscarLocalidad.Text)
-        If localidadesEncontradas Is Nothing Then
-            MessageBox.Show("Localidad no encontrada")
-        Else
-            cmbLocalidades.Items.Clear()
-            For Each localidad In localidadesEncontradas
-                cmbLocalidades.Items.Add(localidad)
-                cmbLocalidades.DisplayMember = "nombre"
-            Next
-            cmbLocalidades.SelectedIndex = 0
-        End If
-    End Sub
-
     Private Sub cmbLocalidades_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbLocalidades.SelectedIndexChanged
+        For Each eleccion In _negocio.eleccionesPorLocalidad
+            cmbElecciones.Items.Add(eleccion)
+            cmbElecciones.DisplayMember = "tipo"
+        Next
         'Comprueba que hoy haya alguna eleccion posible para votar, de lo contrario, avisará
         If cmbElecciones.Items.Count > 0 Then
             cmbElecciones.SelectedIndex = 0
         Else
-            MessageBox.Show("No hay elecciones hoy... Pista: añade una en la db º_º")
+            MessageBox.Show("No hay elecciones en esta Pista: añade una en la db º_º")
             Exit Sub
         End If
         'Abilita los controles inferiores del formulario para proceder al voto
+        For Each partido In _negocio.DevolverPartidosPorLocalidad
+            cmbPartidos.Items.Add(partido)
+            cmbPartidos.DisplayMember = "nombre"
+        Next
         txtDni.Enabled = True
         cmbPartidos.Enabled = True
         btnVotar.Enabled = True
@@ -75,4 +77,6 @@ Public Class frmVotar
             End Try
         End If
     End Sub
+
+
 End Class

@@ -11,7 +11,7 @@ Public Class Negocio
         Return _datos.DevolverComunidades
     End Function
 
-    Public Function DevolverPartidos() As List(Of Partido)
+    Public Function DevolverPartidosPorLocalidad() As List(Of Partido)
         Return _datos.DevolverPartidos
     End Function
 
@@ -45,8 +45,8 @@ Public Class Negocio
     Public Function Votar(ByVal per As Persona, ByVal elecciones As Elecciones, ByVal localidad As Localidad)
         Return _datos.Votar(per, elecciones, localidad)
     End Function
-    Public Function eleccionesDeHoy() As List(Of Elecciones)
-        Return _datos.eleccionesDeHoy()
+    Public Function eleccionesPorLocalidad() As List(Of Elecciones)
+        Return _datos.eleccionesPorLocalidad()
     End Function
     Public Function devolverPersonaPorDNI(dni As String, localidad As Localidad) As Persona
         Return _datos.devolverPersonaPorDNI(dni, localidad)(0)

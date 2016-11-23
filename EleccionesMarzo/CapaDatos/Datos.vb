@@ -191,11 +191,12 @@ Public Class Datos
     End Function
 
     'Función para obetener aquellas Elecciones que se celebren en el dia de Hoy
-    Public Function eleccionesDeHoy() As List(Of Elecciones)
-        Dim elecciones = From drElecciones In dsElecciones.Elecciones
-                         Order By drElecciones.tipo Ascending
-                         Where drElecciones.fecha = Today
-                         Select New Elecciones(drElecciones.idElecciones, drElecciones.fecha, drElecciones.tipo)
+    Public Function eleccionesPorLocalidad() As List(Of Elecciones)
+        Dim elecciones = From drPartidosPorLocalidad In dsElecciones.PartidosPorLocalidad
+                         Where drPartidosPorLocalidad.EleccionesRow.fecha >= Today
+                         Select New Elecciones(drPartidosPorLocalidad.idElecciones,
+                             drPartidosPorLocalidad.EleccionesRow.fecha,
+                             drPartidosPorLocalidad.EleccionesRow.tipo)
 
         Return elecciones.ToList
     End Function
