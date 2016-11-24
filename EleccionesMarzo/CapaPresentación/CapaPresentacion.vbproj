@@ -79,6 +79,12 @@
     <Compile Include="frmInicio.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmIntroducirVotos.Designer.vb">
+      <DependentUpon>frmIntroducirVotos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmIntroducirVotos.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmVotar.Designer.vb">
       <DependentUpon>frmVotar.vb</DependentUpon>
     </Compile>
@@ -104,6 +110,9 @@
   <ItemGroup>
     <EmbeddedResource Include="frmInicio.resx">
       <DependentUpon>frmInicio.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIntroducirVotos.resx">
+      <DependentUpon>frmIntroducirVotos.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmVotar.resx">
       <DependentUpon>frmVotar.vb</DependentUpon>

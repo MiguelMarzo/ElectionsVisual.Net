@@ -70,7 +70,7 @@ Public Class frmVotar
             'puedan ocurrir durante su ejecución, si fallase, el catch recogería la excepción y avisaría de que el voto no
             'se ha efectuado correctamente
             Try
-                Dim exito As Boolean = _negocio.Votar(per, cmbElecciones.SelectedItem, cmbLocalidades.SelectedItem)
+                Dim exito As Boolean = _negocio.Votar(per, cmbElecciones.SelectedItem, cmbLocalidades.SelectedItem, cmbPartidos.SelectedItem)
                 If exito = True Then MessageBox.Show("Voto realizado correctamente") Else MessageBox.Show("Error al votar")
             Catch ex As Exception
                 MessageBox.Show("Error al votar")
@@ -78,5 +78,7 @@ Public Class frmVotar
         End If
     End Sub
 
-
+    Private Sub btnIntroducirVotos_Click(sender As Object, e As EventArgs) Handles btnIntroducirVotos.Click
+        frmIntroducirVotos.Show()
+    End Sub
 End Class

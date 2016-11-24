@@ -3,6 +3,7 @@ Public Class Datos
 
     Private dsElecciones As DSElecciones
     Private daVotos As New DSEleccionesTableAdapters.VotosTableAdapter
+    Private daPartidosPorLocalidadesYElecciones As New DSEleccionesTableAdapters.PartidosPorLocalidadTableAdapter
     Private daPersona As New DSEleccionesTableAdapters.PersonaTableAdapter
     Public Sub iki()
         Dim cadCon As String = My.Settings.EleccionesMarzoConnectionString
@@ -38,7 +39,7 @@ Public Class Datos
             daVotos.Fill(dsElecciones.Votos)
 
             'Adaptador para PartidosPorLocalidades
-            Dim daPartidosPorLocalidadesYElecciones As New DSEleccionesTableAdapters.PartidosPorLocalidadTableAdapter
+
             daPartidosPorLocalidadesYElecciones.Fill(dsElecciones.PartidosPorLocalidad)
 
         Catch ex As Exception
@@ -81,6 +82,13 @@ Public Class Datos
 
         Return partidos.ToList
 
+    End Function
+    Public Function DevolverElecciones() As List(Of Elecciones)
+        Dim elecciones = From drElecciones In dsElecciones.Elecciones
+                         Order By drElecciones.fecha
+                         Select New Elecciones(drElecciones.idElecciones, drElecciones.fecha, drElecciones.tipo)
+
+        Return elecciones.ToList
     End Function
 
     'Función para obtener las Provincias que pertenecen a una Comunidad
@@ -159,7 +167,7 @@ Public Class Datos
     End Function
 
     'Función que ejecuta una instrucción de Insert en el DataSet y luego en la BD, en la tabla Voto
-    Public Function Votar(ByVal per As Persona, ByVal eleccion As Elecciones, ByVal localidad As Localidad) As Boolean
+    Public Function Votar(ByVal per As Persona, ByVal eleccion As Elecciones, ByVal localidad As Localidad, ByVal partido As Partido) As Boolean
         'Primero comprueba si esa persona, de esa localidad puede votar, es  decir, si es mayor de 18 años
         'Devolvería False si no fuese así o si la persona no perteneciese a la Localidad dada
         Try
@@ -181,7 +189,20 @@ Public Class Datos
                     dtVotos.Rows.Add(drVoto)
                     'Y por último se da la orden de Update y AcceptChanges para trasladar los cambios sufridos por el DataSet a la BD
                     daVotos.Update(drVoto)
+
+
+                    'Actualizamos el número total de votos a ese partido en esas elecciones, en esa localidad
+                    'Dim drPartidoLocalidad As DSElecciones.PartidosPorLocalidadRow
+                    'drPartidoLocalidad = dsElecciones.PartidosPorLocalidad.FindByidPartidoidLocalidadidElecciones(partido.id, localidad.Id, eleccion.id)
+                    'drPartidoLocalidad.BeginEdit()
+                    'drPartidoLocalidad.Item("votosTotales") = (From drPL In dsElecciones.PartidosPorLocalidad
+                    '                                           Where drPL.idElecciones = eleccion.id AndAlso drPL.idPartido = partido.id AndAlso drPL.idElecciones = eleccion.id
+                    '                                           Select drPL.votosTotales)(0) + 1
+                    'drPartidoLocalidad.EndEdit()
+
+
                     dsElecciones.AcceptChanges()
+
                     Return True
                 End If
             End If
@@ -189,9 +210,31 @@ Public Class Datos
             Return False
         End Try
     End Function
+    Public Function IntroducirVotos(ByVal partido As Partido, ByVal eleccion As Elecciones, ByVal localidad As Localidad, ByVal numVotos As Integer)
+        Dim dtPartidosPorLocalidad As DataTable
+        dtPartidosPorLocalidad = dsElecciones.PartidosPorLocalidad
 
+        Dim drPartidoPorLocalidad As DataRow = dtPartidosPorLocalidad.NewRow
+        drPartidoPorLocalidad("idPartido") = partido.id
+        drPartidoPorLocalidad("idLocalidad") = localidad.Id
+        drPartidoPorLocalidad("votosTotales") = numVotos
+        drPartidoPorLocalidad("idElecciones") = eleccion.id
+        dtPartidosPorLocalidad.Rows.Add(drPartidoPorLocalidad)
+        daPartidosPorLocalidadesYElecciones.Update(drPartidoPorLocalidad)
+        dsElecciones.AcceptChanges()
+
+
+
+        'Dim drPartidoLocalidad As DSElecciones.PartidosPorLocalidadRow
+        'drPartidoLocalidad = dsElecciones.PartidosPorLocalidad.FindByidPartidoidLocalidadidElecciones(partido.id, localidad.Id, eleccion.id)
+        'drPartidoLocalidad.BeginEdit()
+        'drPartidoLocalidad.Item("votosTotales") = numVotos
+        'drPartidoLocalidad.EndEdit()
+        'dsElecciones.AcceptChanges()
+        Return True
+    End Function
     'Función para obetener aquellas Elecciones que se celebren en el dia de Hoy
-    Public Function eleccionesPorLocalidad() As List(Of Elecciones)
+    Public Function EleccionesPorLocalidad() As List(Of Elecciones)
         Dim elecciones = From drPartidosPorLocalidad In dsElecciones.PartidosPorLocalidad
                          Where drPartidosPorLocalidad.EleccionesRow.fecha >= Today
                          Select New Elecciones(drPartidosPorLocalidad.idElecciones,
@@ -203,7 +246,7 @@ Public Class Datos
 
     'Función para obtener el objecto Persona cuyo DNI es dado como parámetro
     'El parámetro localidad solo es para poder hacer el FillByIdLocalidad
-    Public Function devolverPersonaPorDNI(dni As String, localidad As Localidad) As List(Of Persona)
+    Public Function DevolverPersonaPorDNI(dni As String, localidad As Localidad) As List(Of Persona)
         If dsElecciones.Persona.Rows.Count = 0 OrElse TryCast(dsElecciones.Persona.Rows(0), DSElecciones.PersonaRow).idLocalidad <> localidad.Id Then
             daPersona.FillByIdLocalidad(dsElecciones.Persona, localidad.Id)
         End If
@@ -214,4 +257,6 @@ Public Class Datos
 
         Return per.ToList
     End Function
+
+
 End Class

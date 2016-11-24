@@ -37,11 +37,13 @@ Partial Class frmVotar
         Me.cmbProvincia = New System.Windows.Forms.ComboBox()
         Me.cmbComunidades = New System.Windows.Forms.ComboBox()
         Me.ComunidadTableAdapter1 = New CapaDatos.DSEleccionesTableAdapters.ComunidadTableAdapter()
+        Me.btnIntroducirVotos = New System.Windows.Forms.Button()
+        Me.btnRecuento = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'btnVotar
         '
-        Me.btnVotar.Location = New System.Drawing.Point(242, 367)
+        Me.btnVotar.Location = New System.Drawing.Point(303, 364)
         Me.btnVotar.Name = "btnVotar"
         Me.btnVotar.Size = New System.Drawing.Size(118, 55)
         Me.btnVotar.TabIndex = 9
@@ -52,7 +54,7 @@ Partial Class frmVotar
         '
         Me.lblSeparador.AutoSize = True
         Me.lblSeparador.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblSeparador.Location = New System.Drawing.Point(-13, 155)
+        Me.lblSeparador.Location = New System.Drawing.Point(-7, 153)
         Me.lblSeparador.Name = "lblSeparador"
         Me.lblSeparador.Size = New System.Drawing.Size(1040, 24)
         Me.lblSeparador.TabIndex = 20
@@ -63,7 +65,7 @@ Partial Class frmVotar
         '
         Me.lblDni.AutoSize = True
         Me.lblDni.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDni.Location = New System.Drawing.Point(87, 315)
+        Me.lblDni.Location = New System.Drawing.Point(148, 312)
         Me.lblDni.Name = "lblDni"
         Me.lblDni.Size = New System.Drawing.Size(145, 24)
         Me.lblDni.TabIndex = 22
@@ -72,7 +74,7 @@ Partial Class frmVotar
         'txtDni
         '
         Me.txtDni.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDni.Location = New System.Drawing.Point(242, 311)
+        Me.txtDni.Location = New System.Drawing.Point(303, 308)
         Me.txtDni.Name = "txtDni"
         Me.txtDni.Size = New System.Drawing.Size(192, 28)
         Me.txtDni.TabIndex = 21
@@ -90,7 +92,7 @@ Partial Class frmVotar
         'cmbPartidos
         '
         Me.cmbPartidos.FormattingEnabled = True
-        Me.cmbPartidos.Location = New System.Drawing.Point(333, 242)
+        Me.cmbPartidos.Location = New System.Drawing.Point(370, 240)
         Me.cmbPartidos.Name = "cmbPartidos"
         Me.cmbPartidos.Size = New System.Drawing.Size(192, 24)
         Me.cmbPartidos.TabIndex = 25
@@ -98,7 +100,7 @@ Partial Class frmVotar
         'cmbElecciones
         '
         Me.cmbElecciones.FormattingEnabled = True
-        Me.cmbElecciones.Location = New System.Drawing.Point(333, 195)
+        Me.cmbElecciones.Location = New System.Drawing.Point(370, 193)
         Me.cmbElecciones.Name = "cmbElecciones"
         Me.cmbElecciones.Size = New System.Drawing.Size(192, 24)
         Me.cmbElecciones.TabIndex = 27
@@ -126,7 +128,7 @@ Partial Class frmVotar
         'cmbLocalidades
         '
         Me.cmbLocalidades.FormattingEnabled = True
-        Me.cmbLocalidades.Location = New System.Drawing.Point(333, 128)
+        Me.cmbLocalidades.Location = New System.Drawing.Point(370, 126)
         Me.cmbLocalidades.Name = "cmbLocalidades"
         Me.cmbLocalidades.Size = New System.Drawing.Size(192, 24)
         Me.cmbLocalidades.TabIndex = 33
@@ -154,7 +156,7 @@ Partial Class frmVotar
         'cmbProvincia
         '
         Me.cmbProvincia.FormattingEnabled = True
-        Me.cmbProvincia.Location = New System.Drawing.Point(333, 74)
+        Me.cmbProvincia.Location = New System.Drawing.Point(370, 72)
         Me.cmbProvincia.Name = "cmbProvincia"
         Me.cmbProvincia.Size = New System.Drawing.Size(192, 24)
         Me.cmbProvincia.TabIndex = 30
@@ -162,7 +164,7 @@ Partial Class frmVotar
         'cmbComunidades
         '
         Me.cmbComunidades.FormattingEnabled = True
-        Me.cmbComunidades.Location = New System.Drawing.Point(333, 15)
+        Me.cmbComunidades.Location = New System.Drawing.Point(370, 13)
         Me.cmbComunidades.Name = "cmbComunidades"
         Me.cmbComunidades.Size = New System.Drawing.Size(192, 24)
         Me.cmbComunidades.TabIndex = 29
@@ -171,11 +173,31 @@ Partial Class frmVotar
         '
         Me.ComunidadTableAdapter1.ClearBeforeFill = True
         '
+        'btnIntroducirVotos
+        '
+        Me.btnIntroducirVotos.Location = New System.Drawing.Point(50, 479)
+        Me.btnIntroducirVotos.Name = "btnIntroducirVotos"
+        Me.btnIntroducirVotos.Size = New System.Drawing.Size(169, 55)
+        Me.btnIntroducirVotos.TabIndex = 35
+        Me.btnIntroducirVotos.Text = "Introducir votos del paritdo"
+        Me.btnIntroducirVotos.UseVisualStyleBackColor = True
+        '
+        'btnRecuento
+        '
+        Me.btnRecuento.Location = New System.Drawing.Point(518, 479)
+        Me.btnRecuento.Name = "btnRecuento"
+        Me.btnRecuento.Size = New System.Drawing.Size(169, 55)
+        Me.btnRecuento.TabIndex = 36
+        Me.btnRecuento.Text = "Finalizar y almacenar recuento"
+        Me.btnRecuento.UseVisualStyleBackColor = True
+        '
         'frmVotar
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(653, 460)
+        Me.ClientSize = New System.Drawing.Size(770, 570)
+        Me.Controls.Add(Me.btnRecuento)
+        Me.Controls.Add(Me.btnIntroducirVotos)
         Me.Controls.Add(Me.lblLocalidades)
         Me.Controls.Add(Me.cmbLocalidades)
         Me.Controls.Add(Me.lblProvincias)
@@ -211,4 +233,6 @@ Partial Class frmVotar
     Friend WithEvents lblCmbComunidades As Label
     Friend WithEvents cmbProvincia As ComboBox
     Friend WithEvents cmbComunidades As ComboBox
+    Friend WithEvents btnIntroducirVotos As Button
+    Friend WithEvents btnRecuento As Button
 End Class
