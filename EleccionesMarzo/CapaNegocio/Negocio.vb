@@ -62,5 +62,8 @@ Public Class Negocio
     Public Function Finalizar() As String
         Return _datos.Finalizar()
     End Function
+    Public Function TieneVotos(ByVal partido As Partido, ByVal eleccion As Elecciones, ByVal localidad As Localidad) As Integer
+        Return _datos.TieneVotos(partido, eleccion, localidad)
+    End Function
 
 End Class

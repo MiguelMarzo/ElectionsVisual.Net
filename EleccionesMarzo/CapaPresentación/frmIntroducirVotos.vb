@@ -53,6 +53,13 @@
             MessageBox.Show("Cantidad de votos no válida")
             Exit Sub
         End Try
-        _negocio.introducirVotos(cmbPartidos.SelectedItem, cmbElecciones.SelectedItem, cmbLocalidades.SelectedItem, numVotos)
+        Dim votosActuales As Integer = _negocio.TieneVotos(cmbPartidos.SelectedItem, cmbElecciones.SelectedItem, cmbLocalidades.SelectedItem)
+        If votosActuales > 0 Then
+            Dim editar = MessageBox.Show("Ese partido ya tiene establecidos " & votosActuales & ". ¿Editar de todas formas?", "holis", MessageBoxButtons.YesNo)
+            If editar = DialogResult.Yes Then
+                MessageBox.Show(_negocio.introducirVotos(cmbPartidos.SelectedItem, cmbElecciones.SelectedItem, cmbLocalidades.SelectedItem, numVotos))
+            End If
+        End If
+
     End Sub
 End Class
