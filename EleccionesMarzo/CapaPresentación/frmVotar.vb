@@ -81,4 +81,8 @@ Public Class frmVotar
     Private Sub btnIntroducirVotos_Click(sender As Object, e As EventArgs) Handles btnIntroducirVotos.Click
         frmIntroducirVotos.Show()
     End Sub
+
+    Private Sub btnRecuento_Click(sender As Object, e As EventArgs) Handles btnRecuento.Click
+        MessageBox.Show(_negocio.Finalizar)
+    End Sub
 End Class

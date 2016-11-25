@@ -190,17 +190,6 @@ Public Class Datos
                     'Y por último se da la orden de Update y AcceptChanges para trasladar los cambios sufridos por el DataSet a la BD
                     daVotos.Update(drVoto)
 
-
-                    'Actualizamos el número total de votos a ese partido en esas elecciones, en esa localidad
-                    'Dim drPartidoLocalidad As DSElecciones.PartidosPorLocalidadRow
-                    'drPartidoLocalidad = dsElecciones.PartidosPorLocalidad.FindByidPartidoidLocalidadidElecciones(partido.id, localidad.Id, eleccion.id)
-                    'drPartidoLocalidad.BeginEdit()
-                    'drPartidoLocalidad.Item("votosTotales") = (From drPL In dsElecciones.PartidosPorLocalidad
-                    '                                           Where drPL.idElecciones = eleccion.id AndAlso drPL.idPartido = partido.id AndAlso drPL.idElecciones = eleccion.id
-                    '                                           Select drPL.votosTotales)(0) + 1
-                    'drPartidoLocalidad.EndEdit()
-
-
                     dsElecciones.AcceptChanges()
 
                     Return True
@@ -213,24 +202,26 @@ Public Class Datos
     Public Function IntroducirVotos(ByVal partido As Partido, ByVal eleccion As Elecciones, ByVal localidad As Localidad, ByVal numVotos As Integer)
         Dim dtPartidosPorLocalidad As DataTable
         dtPartidosPorLocalidad = dsElecciones.PartidosPorLocalidad
-
         Dim drPartidoPorLocalidad As DataRow = dtPartidosPorLocalidad.NewRow
-        drPartidoPorLocalidad("idPartido") = partido.id
-        drPartidoPorLocalidad("idLocalidad") = localidad.Id
-        drPartidoPorLocalidad("votosTotales") = numVotos
-        drPartidoPorLocalidad("idElecciones") = eleccion.id
-        dtPartidosPorLocalidad.Rows.Add(drPartidoPorLocalidad)
-        daPartidosPorLocalidadesYElecciones.Update(drPartidoPorLocalidad)
-        dsElecciones.AcceptChanges()
+        Try
+            'dataset1.Tables(0).Rows(4).Item(0) = "Wingtip Toys"
+            'dsElecciones.PartidosPorLocalidad.votosTotalesColumn = 123
 
+            For Each par In dsElecciones.PartidosPorLocalidad.Rows
 
+            Next
+            'dsElecciones.Tables("PartidosPorLocalidad").Rows
+            'drPartidoPorLocalidad("idPartido") = partido.id
+            drPartidoPorLocalidad("idLocalidad") = localidad.Id
+            drPartidoPorLocalidad("votosTotales") = numVotos
+            drPartidoPorLocalidad("idElecciones") = eleccion.id
+            dtPartidosPorLocalidad.Rows.Add(drPartidoPorLocalidad)
+            'daPartidosPorLocalidadesYElecciones.Update(drPartidoPorLocalidad)
+            'dsElecciones.AcceptChanges()
+        Catch ex As Exception
 
-        'Dim drPartidoLocalidad As DSElecciones.PartidosPorLocalidadRow
-        'drPartidoLocalidad = dsElecciones.PartidosPorLocalidad.FindByidPartidoidLocalidadidElecciones(partido.id, localidad.Id, eleccion.id)
-        'drPartidoLocalidad.BeginEdit()
-        'drPartidoLocalidad.Item("votosTotales") = numVotos
-        'drPartidoLocalidad.EndEdit()
-        'dsElecciones.AcceptChanges()
+        End Try
+
         Return True
     End Function
     'Función para obetener aquellas Elecciones que se celebren en el dia de Hoy
@@ -256,6 +247,49 @@ Public Class Datos
                       drPersonas.fechaNac, drPersonas.domicilio, drPersonas.codigoPostal, drPersonas.idLocalidad)
 
         Return per.ToList
+    End Function
+
+    Public Function Finalizar() As String
+        If dsElecciones.HasChanges Then
+            Dim partidosSinVotos = From drPartidos In dsElecciones.PartidosPorLocalidad
+                                   Where drPartidos.votosTotales = 0
+                                   Select New PartidosPorLocalidad(drPartidos.idPartido, drPartidos.idLocalidad,
+                                       drPartidos.votosTotales, drPartidos.idElecciones)
+
+            If partidosSinVotos.ToList.Count > 0 Then
+                Dim partNoVotos As String = "Los partidos: "
+                For Each partido In partidosSinVotos.ToList
+                    partNoVotos += partido.idPartido
+                Next
+                partNoVotos += " no tienen votos"
+                Return partNoVotos
+            Else
+                Dim votosDeTodosLosPartidos As Integer = 0
+                For Each localidad In DevolverLocalidades()
+                    For Each eleccion In DevolverElecciones()
+                        For Each partido In (From drPartidos In dsElecciones.PartidosPorLocalidad).ToList
+                            votosDeTodosLosPartidos += partido.votosTotales
+                        Next
+                        If votosDeTodosLosPartidos > PersonasQuePuedenVotarEnUnaFecha(localidad.Id,
+                                                                                   eleccion.fecha,
+                                                                                   18).ToList.Count Then
+                            Return "Error, hay más votos que población censada"
+
+                        Else
+                            dsElecciones.AcceptChanges()
+                            Return "Cambios aceptados"
+                        End If
+                    Next
+
+                Next
+
+            End If
+
+        Else
+            Return "Error, no hay cambios"
+        End If
+
+
     End Function
 
 

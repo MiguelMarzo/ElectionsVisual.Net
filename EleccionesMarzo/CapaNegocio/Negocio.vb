@@ -59,4 +59,8 @@ Public Class Negocio
         Return _datos.DevolverElecciones()
     End Function
 
+    Public Function Finalizar() As String
+        Return _datos.Finalizar()
+    End Function
+
 End Class
