@@ -5,7 +5,7 @@ Public Class Datos
     Private daVotos As New DSEleccionesTableAdapters.VotosTableAdapter
     Private daPartidosPorLocalidadesYElecciones As New DSEleccionesTableAdapters.PartidosPorLocalidadTableAdapter
     Private daPersona As New DSEleccionesTableAdapters.PersonaTableAdapter
-    Private partidosVotados As New List(Of DSElecciones.PartidosPorLocalidadRow)
+    ' Private partidosVotados As New List(Of DSElecciones.PartidosPorLocalidadRow)
     Public Sub iki()
         Dim cadCon As String = My.Settings.EleccionesMarzoConnectionString
     End Sub
@@ -225,7 +225,10 @@ Public Class Datos
                     par.BeginEdit()
                     par.Item("votosTotales") = numVotos
                     par.EndEdit()
-                    partidosVotados.Add(par)
+
+
+
+                    'partidosVotados.Add(par)
 
                     Return True
                 End If
@@ -259,7 +262,7 @@ Public Class Datos
     'Función que comprueba si ha habido cambios en el dataset, y trás 
     Public Function Finalizar() As String
         Dim result As String = ""
-        If partidosVotados.Count > 0 Then
+        If dsElecciones.HasChanges Then
             Dim partidosSinVotos = From drPartidos In dsElecciones.PartidosPorLocalidad
                                    Where drPartidos.votosTotales = 0
                                    Select New PartidosPorLocalidad(drPartidos.idPartido, drPartidos.idLocalidad,
@@ -281,17 +284,18 @@ Public Class Datos
                         Dim censo = PersonasQuePuedenVotarEnUnaFecha(localidad.Id, eleccion.fecha, 18).ToList.Count
                         If votosDeTodosLosPartidos > censo Then
                             result += "Error, hay más votos que población censada en " + localidad.nombre
-                            Exit for
+                            Exit For
                         End If
                     Next
                 Next
             End If
-            For Each par In partidosVotados
-                daPartidosPorLocalidadesYElecciones.Update(par)
-            Next
+            daPartidosPorLocalidadesYElecciones.Update(dsElecciones.PartidosPorLocalidad)
+            ' For Each par In partidosVotados
+            'daPartidosPorLocalidadesYElecciones.Update(par)
+            'Next
 
             dsElecciones.AcceptChanges()
-            partidosVotados.Clear()
+            'partidosVotados.Clear()
             result = "Cambios aceptados. Observaciones: " + result
             Return result
         Else
